@@ -3,7 +3,6 @@ import 'package:delmess/core/database/database_providers.dart';
 import 'package:delmess/core/selection/label_assignment_dialog.dart';
 import 'package:delmess/core/utils/date_formatter.dart';
 import 'package:delmess/core/utils/string_utils.dart';
-import 'package:delmess/core/widgets/app_buttons.dart';
 import 'package:delmess/core/widgets/app_cards.dart';
 import 'package:delmess/core/widgets/category_badge.dart';
 import 'package:delmess/core/widgets/loading_state_view.dart';
@@ -68,12 +67,16 @@ class MessageDetailScreen extends ConsumerWidget {
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   conversation.sender,
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -429,90 +432,27 @@ class MessageDetailScreen extends ConsumerWidget {
                                 if (extractedOtp != null) ...[
                                   const SizedBox(height: AppDimensions.space16),
                                   Container(
-                                    padding: const EdgeInsets.all(
-                                      AppDimensions.space16,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: AppDimensions.space16,
+                                      vertical: AppDimensions.space12,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: theme
-                                          .colorScheme
-                                          .primaryContainer
-                                          .withValues(alpha: 0.6),
+                                      color: theme.colorScheme.primaryContainer
+                                          .withValues(alpha: 0.5),
                                       borderRadius:
                                           AppDimensions.borderRadiusMd,
                                       border: Border.all(
                                         color: theme.colorScheme.primary
-                                            .withValues(alpha: 0.4),
+                                            .withValues(alpha: 0.35),
                                         width: 1.5,
                                       ),
                                     ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                color: theme
-                                                    .colorScheme
-                                                    .primary
-                                                    .withValues(alpha: 0.15),
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Icon(
-                                                Icons.security,
-                                                color:
-                                                    theme.colorScheme.primary,
-                                                size: AppDimensions.iconSm,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: AppDimensions.space12,
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  'VERIFICATION CODE / OTP',
-                                                  style: theme
-                                                      .textTheme
-                                                      .labelSmall
-                                                      ?.copyWith(
-                                                        color: theme
-                                                            .colorScheme
-                                                            .primary,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        letterSpacing: 1.1,
-                                                      ),
-                                                ),
-                                                const SizedBox(height: 2),
-                                                Text(
-                                                  extractedOtp,
-                                                  style: theme
-                                                      .textTheme
-                                                      .headlineSmall
-                                                      ?.copyWith(
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                        letterSpacing: 3.0,
-                                                        color: theme
-                                                            .colorScheme
-                                                            .primary,
-                                                      ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        PrimaryButton(
-                                          text: 'Copy OTP',
-                                          icon: Icons.copy,
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        final isCompact =
+                                            constraints.maxWidth < 280;
+
+                                        final copyOtpButton = FilledButton.icon(
                                           onPressed: () {
                                             Clipboard.setData(
                                               ClipboardData(text: extractedOtp),
@@ -532,8 +472,213 @@ class MessageDetailScreen extends ConsumerWidget {
                                               ),
                                             );
                                           },
-                                        ),
-                                      ],
+                                          icon: const Icon(
+                                            Icons.copy,
+                                            size: 16,
+                                          ),
+                                          label: const Text(
+                                            'Copy OTP',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          style: FilledButton.styleFrom(
+                                            backgroundColor:
+                                                theme.colorScheme.primary,
+                                            foregroundColor:
+                                                theme.colorScheme.onPrimary,
+                                            visualDensity:
+                                                VisualDensity.compact,
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 14,
+                                              vertical: 8,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                          ),
+                                        );
+
+                                        if (isCompact) {
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(6),
+                                                    decoration: BoxDecoration(
+                                                      color: theme
+                                                          .colorScheme
+                                                          .primary
+                                                          .withValues(
+                                                              alpha: 0.15),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.security,
+                                                      color: theme
+                                                          .colorScheme
+                                                          .primary,
+                                                      size: 16,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: AppDimensions.space8,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      'VERIFICATION CODE / OTP',
+                                                      style: theme
+                                                          .textTheme
+                                                          .labelSmall
+                                                          ?.copyWith(
+                                                            color: theme
+                                                                .colorScheme
+                                                                .primary,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            letterSpacing: 0.8,
+                                                          ),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: AppDimensions.space8,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Expanded(
+                                                    child: SelectableText(
+                                                      extractedOtp,
+                                                      style: theme
+                                                          .textTheme
+                                                          .headlineSmall
+                                                          ?.copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                            letterSpacing: 2.0,
+                                                            color: theme
+                                                                .colorScheme
+                                                                .primary,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: AppDimensions.space8,
+                                                  ),
+                                                  copyOtpButton,
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        }
+
+                                        return Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color: theme
+                                                          .colorScheme
+                                                          .primary
+                                                          .withValues(
+                                                              alpha: 0.15),
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.security,
+                                                      color: theme
+                                                          .colorScheme
+                                                          .primary,
+                                                      size: AppDimensions
+                                                          .iconSm,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    width: AppDimensions
+                                                        .space12,
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          'VERIFICATION CODE / OTP',
+                                                          style: theme
+                                                              .textTheme
+                                                              .labelSmall
+                                                              ?.copyWith(
+                                                                color: theme
+                                                                    .colorScheme
+                                                                    .primary,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                letterSpacing:
+                                                                    0.8,
+                                                              ),
+                                                          maxLines: 1,
+                                                          overflow:
+                                                              TextOverflow
+                                                                  .ellipsis,
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 2,
+                                                        ),
+                                                        SelectableText(
+                                                          extractedOtp,
+                                                          style: theme
+                                                              .textTheme
+                                                              .headlineSmall
+                                                              ?.copyWith(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w900,
+                                                                letterSpacing:
+                                                                    2.5,
+                                                                color: theme
+                                                                    .colorScheme
+                                                                    .primary,
+                                                              ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              width: AppDimensions.space8,
+                                            ),
+                                            copyOtpButton,
+                                          ],
+                                        );
+                                      },
                                     ),
                                   ),
                                 ],
@@ -816,10 +961,16 @@ class MessageDetailScreen extends ConsumerWidget {
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
-          Text(
-            value,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
+          const SizedBox(width: AppDimensions.space12),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             ),
           ),
         ],

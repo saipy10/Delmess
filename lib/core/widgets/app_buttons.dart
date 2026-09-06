@@ -40,11 +40,15 @@ class PrimaryButton extends StatelessWidget {
                 Icon(icon, size: AppDimensions.iconSm),
                 const SizedBox(width: AppDimensions.space8),
               ],
-              Text(
-                text,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: theme.colorScheme.onPrimary,
+              Flexible(
+                child: Text(
+                  text,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: theme.colorScheme.onPrimary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -114,11 +118,15 @@ class SecondaryButton extends StatelessWidget {
               Icon(icon, size: AppDimensions.iconSm),
               const SizedBox(width: AppDimensions.space8),
             ],
-            Text(
-              text,
-              style: theme.textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onPrimaryContainer,
+            Flexible(
+              child: Text(
+                text,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],
@@ -173,10 +181,14 @@ class AppOutlinedButton extends StatelessWidget {
               ),
               const SizedBox(width: AppDimensions.space8),
             ],
-            Text(
-              text,
-              style: theme.textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w600,
+            Flexible(
+              child: Text(
+                text,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ],

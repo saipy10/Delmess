@@ -1,7 +1,6 @@
 import 'package:delmess/core/constants/category_constants.dart';
 import 'package:delmess/core/database/app_database.dart';
 import 'package:delmess/core/database/database_providers.dart';
-import 'package:delmess/features/inbox/presentation/controllers/inbox_controller.dart';
 import 'package:delmess/features/inbox/presentation/screens/inbox_screen.dart';
 import 'package:delmess/features/labels/data/label_repository.dart';
 import 'package:delmess/features/messages/data/message_repository.dart';
