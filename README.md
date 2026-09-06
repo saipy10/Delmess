@@ -9,6 +9,11 @@
 
 > **DelMess** is a privacy-first, intelligent SMS organization app built for Indian mobile users. It automatically classifies incoming SMS, extracts OTPs with one-tap copy, identifies brand senders, and eliminates spam and clutter—all executed **100% locally on your device**.
 
+
+
+https://github.com/user-attachments/assets/b81f2bb3-c4b3-4159-afab-e703a3b1a63c
+
+
 ---
 
 ## 🌟 Key Features
