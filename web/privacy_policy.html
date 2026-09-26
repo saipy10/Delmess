@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy - DelMess SMS Organizer</title>
+  <meta name="description" content="Official Privacy Policy for DelMess Smart SMS Organizer. 100% on-device SMS processing with zero remote cloud data transfer.">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --surface: #ffffff;
+      --background: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --card-bg: #ffffff;
+      --chip-bg: #ecfdf5;
+      --chip-text: #065f46;
+      --chip-border: #a7f3d0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --primary: #60a5fa;
+        --primary-light: #93c5fd;
+        --surface: #0f172a;
+        --background: #020617;
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --border: #1e293b;
+        --card-bg: #0f172a;
+        --chip-bg: #064e3b;
+        --chip-text: #6ee7b7;
+        --chip-border: #047857;
+      }
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.65;
+      background-color: var(--background);
+      color: var(--text);
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 840px;
+      margin: 40px auto;
+      padding: 40px 32px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--chip-bg);
+      color: var(--chip-text);
+      border: 1px solid var(--chip-border);
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    h1 {
+      color: var(--primary);
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 0 0 12px 0;
+      letter-spacing: -0.02em;
+    }
+    .meta-box {
+      background: rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 20px 0 32px 0;
+      font-size: 0.9rem;
+    }
+    .meta-box p {
+      margin: 4px 0;
+      color: var(--muted);
+    }
+    .meta-box strong {
+      color: var(--text);
+    }
+    h2 {
+      margin-top: 36px;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+    p, li {
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+    ul {
+      padding-left: 24px;
+      margin: 12px 0;
+    }
+    li {
+      margin-bottom: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.92rem;
+    }
+    th {
+      background-color: rgba(59, 130, 246, 0.08);
+      color: var(--text);
+      font-weight: 600;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      background: rgba(0, 0, 0, 0.05);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .callout {
+      margin: 24px 0;
+      padding: 20px;
+      background-color: rgba(59, 130, 246, 0.08);
+      border-left: 4px solid var(--primary);
+      border-radius: 8px;
+    }
+    .callout h3 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+    .callout p {
+      margin-bottom: 0;
+    }
+    .contact-box {
+      margin-top: 40px;
+      padding: 24px;
+      background-color: rgba(16, 185, 129, 0.08);
+      border-left: 4px solid #10b981;
+      border-radius: 8px;
+    }
+    .contact-box h3 {
+      margin: 0 0 8px 0;
+      color: var(--text);
+    }
+    a {
+      color: var(--primary-light);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      margin-top: 48px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      100% On-Device &bull; Zero Cloud Upload
+    </div>
+    <h1>Privacy Policy for DelMess</h1>
+    
+    <div class="meta-box">
+      <p><strong>Application:</strong> DelMess (Smart SMS Organizer)</p>
+      <p><strong>Package Identifier:</strong> <code>com.delmess.smsorganizer.delmess</code></p>
+      <p><strong>Effective Date:</strong> September 2026</p>
+      <p><strong>Hosted URL:</strong> <a href="https://saipy10.github.io/Delmess/privacy_policy.html">https://saipy10.github.io/Delmess/privacy_policy.html</a></p>
+      <p><strong>Official Support Contact:</strong> <a href="mailto:c7122867@gmail.com">c7122867@gmail.com</a></p>
+    </div>
+
+    <p>DelMess ("we", "our", or "the App") is committed to absolute user privacy, local data sovereignty, and radical transparency. This Privacy Policy details how DelMess processes data strictly on your physical Android device.</p>
+
+    <h2>1. 100% On-Device Zero-Cloud Architecture</h2>
+    <p>DelMess is engineered with an offline-first, on-device architecture. The production release build of DelMess does <strong>NOT declare or request Android's <code>android.permission.INTERNET</code></strong>. Because no network permission exists in the release build, the application is physically and technically incapable of transmitting your messages, sender headers, financial data, OTPs, or device identifiers over the network to external servers or cloud services.</p>
+
+    <h2>2. SMS Processing & TRAI Header Decoding</h2>
+    <p>DelMess analyzes SMS messages exclusively on your phone to organize them into structured categories:</p>
+    <ul>
+      <li><strong>Transactional:</strong> Bank transaction alerts, UPI transfers, ATM withdrawals, and credit/debit card alerts.</li>
+      <li><strong>Service:</strong> E-commerce order confirmations, courier tracking, ride-hailing updates, and utility notifications.</li>
+      <li><strong>Promotional:</strong> Marketing broadcasts, seasonal sales campaigns, and promotional coupon codes.</li>
+      <li><strong>Government:</strong> Official government alerts, Aadhaar/DigiLocker notifications, and public advisories.</li>
+      <li><strong>Other / Spam:</strong> Unclassified or low-priority personal and automated messages.</li>
+    </ul>
+    <p>DelMess decodes commercial alphanumeric sender headers regulated by the Telecom Regulatory Authority of India (TRAI) (e.g. <code>AX-HDFCBK</code>, <code>AD-SWIGGY-T</code>, <code>VM-AMAZON</code>) to identify recognizable brand identities. All parsing, categorization heuristics, and pattern matching run client-side using local Dart code and SQLite queries.</p>
+
+    <h2>3. Ephemeral OTP Intelligence — Zero Storage</h2>
+    <p>DelMess extracts one-time passwords (OTPs) and verification codes dynamically in-memory when rendering message views to enable convenient one-tap clipboard copying.</p>
+    <div class="callout">
+      <h3>🔒 Ephemeral OTP Guarantee</h3>
+      <p>DelMess <strong>never</strong> persists extracted OTP codes into its SQLite database on disk. Extracted OTP credentials exist only ephemerally in active memory during UI display and evaporate as soon as the screen is dismissed.</p>
+    </div>
+
+    <h2>4. Sandboxed Storage & Database Isolation</h2>
+    <p>DelMess stores categorized message metadata, user labels, and application settings in an encrypted or sandboxed local SQLite database managed by the Drift ORM at:</p>
+    <p><code>/data/user/0/com.delmess.smsorganizer.delmess/databases/delmess.sqlite</code></p>
+    <p>Android's Linux kernel UID sandbox isolates this directory, strictly preventing any other installed app from accessing or inspecting DelMess records. DelMess never writes your messages to public shared external storage.</p>
+
+    <h2>5. Permissions Requested & Purpose</h2>
+    <p>DelMess requests only the permissions strictly required to execute its core function as an SMS Organizer and Default SMS Handler:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Android Permission</th>
+          <th>Core Purpose Justification</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>READ_SMS</code></td>
+          <td>Indexes existing SMS messages on the physical device into organized category feeds.</td>
+        </tr>
+        <tr>
+          <td><code>RECEIVE_SMS</code></td>
+          <td>Detects incoming SMS in real-time to organize incoming notifications and extract OTP chips.</td>
+        </tr>
+        <tr>
+          <td><code>SEND_SMS</code></td>
+          <td>Used when DelMess is designated as the Default SMS App (ROLE_SMS) to compose and send outgoing text messages.</td>
+        </tr>
+        <tr>
+          <td><code>RECEIVE_MMS</code> / <code>RECEIVE_WAP_PUSH</code></td>
+          <td>Required by Android OS specifications to satisfy the Default SMS App contract.</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>DelMess does <strong>NOT</strong> request:</p>
+    <ul>
+      <li>❌ <code>INTERNET</code> (Zero network access)</li>
+      <li>❌ <code>ACCESS_FINE_LOCATION</code> or <code>ACCESS_COARSE_LOCATION</code> (No location tracking)</li>
+      <li>❌ <code>READ_CONTACTS</code> (No address book access)</li>
+      <li>❌ <code>CAMERA</code> or <code>RECORD_AUDIO</code> (No media capture)</li>
+      <li>❌ <code>READ_EXTERNAL_STORAGE</code> (No shared disk access)</li>
+    </ul>
+
+    <h2>6. Third-Party Libraries, Analytics & Crash Reporting</h2>
+    <ul>
+      <li><strong>Analytics:</strong> ZERO analytics tracking. We do not use Google Analytics for Firebase, Mixpanel, Amplitude, Segment, Flurry, or Facebook SDK.</li>
+      <li><strong>Advertising:</strong> ZERO advertising SDKs. DelMess is 100% ad-free.</li>
+      <li><strong>Crash Reporting:</strong> ZERO cloud crash reporters (No Firebase Crashlytics, Sentry, or Bugsnag). Crash stack traces remain strictly within Android's local system logs (<code>logcat</code>).</li>
+      <li><strong>Open-Source Components:</strong> All open-source packages (Flutter, Riverpod, Drift, GoRouter, SharedPreferences) execute entirely on-device with zero remote telemetry.</li>
+    </ul>
+
+    <h2>7. User Data Deletion & Retention</h2>
+    <p>You have full autonomy over your data:</p>
+    <ul>
+      <li><strong>In-App Deletion:</strong> Permanently delete single messages, threads, or empty the Trash folder.</li>
+      <li><strong>In-App Database Reset:</strong> Erase all indexed messages and custom labels instantly via <strong>Settings &gt; Privacy &amp; Security &gt; Delete All Local Data &amp; Cache</strong>.</li>
+      <li><strong>Android System Clear Storage:</strong> Purge all app data at any time via <code>Android Settings &gt; Apps &gt; DelMess &gt; Storage &gt; Clear Storage</code>.</li>
+      <li><strong>App Uninstallation:</strong> Uninstalling DelMess immediately erases all SQLite database files, preferences, and caches from your device.</li>
+    </ul>
+
+    <h2>8. Changes to This Privacy Policy</h2>
+    <p>Any updates to this Privacy Policy will be published at this URL with an updated effective date.</p>
+
+    <div class="contact-box">
+      <h3>Developer & Support Inquiries</h3>
+      <p>If you have any questions or feedback regarding this Privacy Policy or DelMess's data practices, please contact developer support directly at:</p>
+      <p><strong>Email:</strong> <a href="mailto:c7122867@gmail.com">c7122867@gmail.com</a></p>
+      <p><strong>Developer:</strong> Sai Shraddha</p>
+      <p><strong>GitHub:</strong> <a href="https://github.com/saipy10/Delmess">https://github.com/saipy10/Delmess</a></p>
+    </div>
+
+    <footer>
+      &copy; 2026 DelMess. All rights reserved. 100% On-Device SMS Organizer.
+    </footer>
+  </div>
+</body>
+</html>

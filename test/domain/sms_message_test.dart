@@ -1,4 +1,5 @@
 import 'package:delmess/core/constants/category_constants.dart';
+import 'package:delmess/features/classification/domain/payment_type.dart';
 import 'package:delmess/features/labels/domain/label_model.dart';
 import 'package:delmess/features/messages/domain/classification_reason.dart';
 import 'package:delmess/features/messages/domain/sms_message.dart';
@@ -29,6 +30,13 @@ void main() {
       expect(msg.receivedAt, now);
       expect(msg.timestamp, now); // Alias test
       expect(msg.category, CategoryType.transactional);
+      expect(msg.categorySource, CategorySource.fallback);
+      expect(msg.isPayment, isFalse);
+      expect(msg.paymentType, PaymentType.none);
+      expect(msg.paymentDirection, PaymentDirection.none);
+      expect(msg.paymentSource, PaymentSource.none);
+      expect(msg.hasOtp, isFalse);
+      expect(msg.otpSource, OtpSource.none);
       expect(msg.classificationConfidence, 1.0);
       expect(msg.classificationReason, ClassificationReason.unknown);
       expect(msg.isRead, isFalse);
@@ -40,13 +48,13 @@ void main() {
       expect(msg.labels, isEmpty);
     });
 
-    test('copyWith updates fields correctly without mutating original', () {
+    test('copyWith updates Phase 7 fields correctly without mutating original', () {
       final msg = SmsMessage(
         id: 'msg_1',
         threadId: 'thread_1',
         sender: 'AD-HDFCBK-T',
         header: 'HDFCBK',
-        body: 'OTP is 123456',
+        body: '₹1,500 debited through UPI',
         receivedAt: now,
         category: CategoryType.transactional,
         createdAt: now,
@@ -54,19 +62,31 @@ void main() {
       );
 
       final updated = msg.copyWith(
+        categorySource: CategorySource.traiSuffix,
+        traiSuffix: 'T',
+        isPayment: true,
+        paymentType: PaymentType.upi,
+        paymentDirection: PaymentDirection.debit,
+        paymentSource: PaymentSource.paymentPattern,
+        hasOtp: true,
+        otpValue: '482913',
+        otpSource: OtpSource.otpPattern,
         isRead: true,
         isStarred: true,
-        isPinned: true,
-        otp: '123456',
-        classificationReason: ClassificationReason.officialSuffix,
       );
 
+      expect(updated.categorySource, 'TRAI_SUFFIX');
+      expect(updated.traiSuffix, 'T');
+      expect(updated.isPayment, isTrue);
+      expect(updated.paymentType, PaymentType.upi);
+      expect(updated.paymentDirection, PaymentDirection.debit);
+      expect(updated.paymentSource, 'PAYMENT_PATTERN');
+      expect(updated.hasOtp, isTrue);
+      expect(updated.otpValue, '482913');
+      expect(updated.otpSource, 'OTP_PATTERN');
       expect(updated.isRead, isTrue);
       expect(updated.isStarred, isTrue);
-      expect(updated.isPinned, isTrue);
-      expect(updated.otp, '123456');
-      expect(updated.classificationReason, ClassificationReason.officialSuffix);
-      expect(msg.isRead, isFalse);
+      expect(msg.isPayment, isFalse);
     });
 
     test(

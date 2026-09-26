@@ -4,22 +4,22 @@ class StringUtils {
 
   /// Regex patterns to extract 4 to 8 digit OTPs / verification codes.
   static final RegExp _otpPrefixRegex = RegExp(
-    r'(?:otp|verification\s+code|code|pin|secret|passcode|one[\s\-]time\s+password)[\s\:\-\=]+(?:is\s+)?([0-9]{4,8})\b',
+    r'(?:otp|verification\s+code|code|pin|secret|passcode|one[\s\-]time\s+password|ओटीपी)[\s\:\-\=]+(?:is\s+)?([0-9]{4,8})\b',
     caseSensitive: false,
   );
 
   static final RegExp _otpContextRegex = RegExp(
-    r'(?:your|the)\s+(?:login\s+|transaction\s+)?(?:otp|verification\s+code|code)[\s\w\.\,\/]*?\bis\s+([0-9]{4,8})\b',
+    r'(?:your|the|aapka|tumcha|tumhi|apka)?\s*(?:login\s+|transaction\s+)?(?:otp|verification\s+code|code|ओटीपी)[\s\w\.\,\/]*?\b(?:is|hai|aahe)\s+([0-9]{4,8})\b',
     caseSensitive: false,
   );
 
   static final RegExp _otpSuffixRegex = RegExp(
-    r'\b([0-9]{4,8})\s+(?:is\s+your|is\s+the|is)\s+(?:otp|verification|code|one[\s\-]time)',
+    r'\b([0-9]{4,8})\s+(?:is\s+your|is\s+the|is|ha\s+tumcha|hai\s+aapka)\s+(?:otp|verification|code|one[\s\-]time|ओटीपी)',
     caseSensitive: false,
   );
 
   static final RegExp _useCodeRegex = RegExp(
-    r'(?:use|enter)\s+(?:code|otp)\s+([0-9]{4,8})\b',
+    r'(?:use|enter)\s+(?:code|otp|ओटीपी)\s+([0-9]{4,8})\b',
     caseSensitive: false,
   );
 

@@ -27,13 +27,35 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
                     val body = bodyBuilder.toString()
                     val id = "rcv_${timestamp}_${sender.hashCode()}"
 
+                    // Extract Dual-SIM subscriptionId and slot index across AOSP and OEM customizations
+                    val subId = intent.getIntExtra(
+                        "subscription",
+                        intent.getIntExtra(
+                            "android.telephony.extra.SUBSCRIPTION_INDEX",
+                            intent.getIntExtra("subId", intent.getIntExtra("simId", -1))
+                        )
+                    )
+
+                    val slotIndex = intent.getIntExtra(
+                        "slot",
+                        intent.getIntExtra(
+                            "simSlot",
+                            intent.getIntExtra(
+                                "phone",
+                                intent.getIntExtra("slotId", if (subId > 0) (subId - 1).coerceIn(0, 1) else 0)
+                            )
+                        )
+                    )
+
                     val messageMap = mapOf<String, Any?>(
                         "id" to id,
                         "threadId" to id,
                         "sender" to sender,
                         "body" to body,
                         "receivedAt" to timestamp,
-                        "isRead" to false
+                        "isRead" to false,
+                        "subId" to subId,
+                        "simSlot" to slotIndex
                     )
 
                     eventSink?.success(messageMap)

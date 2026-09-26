@@ -64,7 +64,7 @@ class SmsHeaderParser {
     final upper = sanitized.toUpperCase();
 
     // 2. Check if it's a mobile phone number (not a commercial header)
-    final digitsOnly = upper.replaceAll(RegExp(r'[\s\-]'), '');
+    final digitsOnly = upper.replaceAll(RegExp(r'[\s\-\(\)\.]'), '');
     if (_phoneRegex.hasMatch(digitsOnly)) {
       return ParsedHeader(
         rawSender: rawSender,
@@ -231,8 +231,8 @@ class SmsHeaderParser {
       );
     }
 
-    // 9. Numeric short code, e.g. 56161
-    if (RegExp(r'^[0-9]{4,8}$').hasMatch(cleanAlphanumeric)) {
+    // 9. Numeric short code, e.g. 121, 198, 56161, 54321
+    if (RegExp(r'^[0-9]{3,8}$').hasMatch(cleanAlphanumeric)) {
       return ParsedHeader(
         rawSender: rawSender,
         normalizedSender: cleanAlphanumeric,

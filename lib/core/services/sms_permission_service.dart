@@ -4,11 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Represents Android SMS runtime permission status.
 enum SmsPermissionState { unknown, granted, denied, permanentlyDenied }
 
-/// Abstract service handling SMS permissions.
+/// Abstract service handling SMS permissions and Default SMS App operations.
 abstract class SmsPermissionService {
   Future<SmsPermissionState> getPermissionState();
   Future<SmsPermissionState> requestSmsPermission();
   Future<bool> openAppSettings();
+  Future<bool> isDefaultSmsApp();
+  Future<bool> requestDefaultSmsApp();
+  Future<bool> sendSms(String recipient, String body);
 }
 
 /// Native Android implementation using MethodChannel.
@@ -51,6 +54,39 @@ class AndroidSmsPermissionService implements SmsPermissionService {
     }
   }
 
+  @override
+  Future<bool> isDefaultSmsApp() async {
+    try {
+      final res = await _channel.invokeMethod<bool>('isDefaultSmsApp');
+      return res ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> requestDefaultSmsApp() async {
+    try {
+      final res = await _channel.invokeMethod<bool>('requestDefaultSmsApp');
+      return res ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<bool> sendSms(String recipient, String body) async {
+    try {
+      final res = await _channel.invokeMethod<bool>('sendSms', {
+        'recipient': recipient,
+        'body': body,
+      });
+      return res ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
   SmsPermissionState _parseState(String? state) {
     switch (state) {
       case 'granted':
@@ -62,40 +98,6 @@ class AndroidSmsPermissionService implements SmsPermissionService {
       default:
         return SmsPermissionState.unknown;
     }
-  }
-}
-
-/// Fake SMS permission service for testing and development.
-class FakeSmsPermissionService implements SmsPermissionService {
-  SmsPermissionState _state;
-  final bool autoGrant;
-
-  FakeSmsPermissionService({
-    SmsPermissionState initialState = SmsPermissionState.unknown,
-    this.autoGrant = true,
-  }) : _state = initialState;
-
-  void setState(SmsPermissionState newState) {
-    _state = newState;
-  }
-
-  @override
-  Future<SmsPermissionState> getPermissionState() async => _state;
-
-  @override
-  Future<SmsPermissionState> requestSmsPermission() async {
-    if (_state == SmsPermissionState.permanentlyDenied) {
-      return SmsPermissionState.permanentlyDenied;
-    }
-    if (autoGrant) {
-      _state = SmsPermissionState.granted;
-    }
-    return _state;
-  }
-
-  @override
-  Future<bool> openAppSettings() async {
-    return true;
   }
 }
 

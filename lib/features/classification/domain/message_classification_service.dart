@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Orchestrates message classification, batch processing, and repeatable reclassification.
 class MessageClassificationService {
   /// Current classifier algorithm version for schema tracking.
-  static const int currentClassifierVersion = 2;
+  static const int currentClassifierVersion = 3;
 
   final ClassificationEngine engine;
   final MessageRepository repository;
@@ -32,6 +32,15 @@ class MessageClassificationService {
         rawSender: message.rawSender ?? result.parsedHeader.rawSender,
         normalizedSender: result.parsedHeader.normalizedSender,
         category: result.category,
+        categorySource: result.categorySource,
+        traiSuffix: result.traiSuffix,
+        isPayment: result.isPayment,
+        paymentType: result.paymentType,
+        paymentDirection: result.paymentDirection,
+        paymentSource: result.paymentSource,
+        hasOtp: result.hasOtp,
+        otpValue: result.detectedOtp,
+        otpSource: result.otpSource,
         classificationConfidence: result.confidence,
         classificationReason: result.reason,
         reasonDescription: result.effectiveReason,
@@ -40,7 +49,7 @@ class MessageClassificationService {
         otp: result.detectedOtp,
         operatorPrefix: result.parsedHeader.operatorPrefix,
         parsedHeader: result.parsedHeader.cleanHeader,
-        messageTypeSuffix: result.parsedHeader.suffix,
+        messageTypeSuffix: result.traiSuffix ?? result.parsedHeader.suffix,
         classificationVersion: currentClassifierVersion,
         updatedAt: DateTime.now(),
       );

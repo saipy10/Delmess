@@ -253,6 +253,52 @@ class ConversationTile extends ConsumerWidget {
                                   category: conversation.category,
                                   compact: true,
                                 ),
+                                if (latestMessage.isPayment) ...[
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      left: AppDimensions.space6,
+                                    ),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: AppDimensions.space6,
+                                        vertical: AppDimensions.space2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: theme
+                                            .colorScheme
+                                            .tertiaryContainer
+                                            .withValues(alpha: 0.6),
+                                        borderRadius:
+                                            AppDimensions.borderRadiusSm,
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            Icons.payments_outlined,
+                                            size: AppDimensions.iconXs,
+                                            color: theme
+                                                .colorScheme
+                                                .onTertiaryContainer,
+                                          ),
+                                          const SizedBox(
+                                            width: AppDimensions.space4,
+                                          ),
+                                          Text(
+                                            latestMessage.paymentType.displayName,
+                                            style: theme.textTheme.labelSmall
+                                                ?.copyWith(
+                                                  color: theme
+                                                      .colorScheme
+                                                      .onTertiaryContainer,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                                 if (latestMessage.otp != null ||
                                     StringUtils.extractOtp(latestMessage.body) != null) ...[
                                   () {

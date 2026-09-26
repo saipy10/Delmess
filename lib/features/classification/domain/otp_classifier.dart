@@ -1,3 +1,7 @@
+import 'dart:math';
+import 'package:delmess/features/classification/domain/otp_result.dart';
+import 'package:delmess/features/classification/domain/payment_type.dart';
+
 /// Dedicated local OTP classifier and extractor with false-positive protection.
 ///
 /// NOTE: For security and privacy, extracted OTPs must NEVER be logged,
@@ -5,85 +9,110 @@
 class OTPClassifier {
   const OTPClassifier();
 
-  // Keyword triggering OTP analysis
+  // Keyword triggering OTP analysis (supporting English, Hindi, and Marathi)
   static final RegExp _otpKeywordRegex = RegExp(
-    r'\b(?:otp|one[- ]time\s+password|verification\s+code|authentication\s+code|security\s+code|login\s+code|passcode)\b',
+    r'(?:\b(?:otp|one[- ]time\s+password|verification\s+code|authentication\s+code|security\s+code|login\s+code|passcode)\b|ओटीपी|वन[- ]टाइम पासवर्ड|पासकोड)',
     caseSensitive: false,
   );
 
-  // Pattern 1: Keyword followed within 0-45 non-digit chars by numeric code
-  // e.g. "Your OTP is 482921", "verification code: 123456", "OTP for transaction authorization is 948215"
-  static final RegExp _keywordThenCode = RegExp(
-    r'(?:otp|one[- ]time\s+password|verification\s+code|authentication\s+code|security\s+code|login\s+code|passcode)[^\d\n\r]{0,45}?\b([0-9]{4,8})\b',
-    caseSensitive: false,
-  );
+  // Pattern matching numeric codes (4, 5, 6, 8 digits)
+  static final RegExp _numericCandidateRegex = RegExp(r'\b([0-9]{4,8})\b');
 
-  // Pattern 2: Code followed within 0-45 non-digit chars by keyword
-  // e.g. "Use 839201 as your authentication code", "482921 is your OTP"
-  static final RegExp _codeThenKeyword = RegExp(
-    r'\b([0-9]{4,8})\b[^\d\n\r]{0,45}?(?:otp|one[- ]time\s+password|verification\s+code|authentication\s+code|security\s+code|login\s+code|passcode)\b',
-    caseSensitive: false,
-  );
-
-  // False positive indicators surrounding a number
+  // False positive indicators in prefix
   static final RegExp _currencyPrefix = RegExp(r'(?:₹|rs\.?|inr|\$)\s*$');
   static final RegExp _accountPrefix = RegExp(
     r'(?:a/c|account|ending(?:\s+with|\s+in)?|card)\s*$',
   );
   static final RegExp _orderPrefix = RegExp(
-    r'(?:order(?:\s*(?:no\.?|id|#))?|invoice|ref(?:\s*(?:no\.?|id))?|ticket)\s*$',
+    r'(?:order(?:\s*(?:no\.?|id|#))?|invoice|ref(?:\s*(?:no\.?|id))?|ticket|pnr|tracking(?:\s*(?:no\.?|id))?|shipment(?:\s*(?:no\.?|id))?)\s*$',
   );
+  static final RegExp _datePrefix = RegExp(r'\d{1,2}[/-]\d{1,2}[/-]\s*$');
+
+  // False positive indicators in suffix
+  static final RegExp _currencySuffix = RegExp(r'^\s*(?:/-|rs\.?|inr)');
+
+  /// Performs full OTP classification returning a structured [OtpResult].
+  OtpResult classify(String body) {
+    final otp = extractOtp(body);
+    if (otp != null) {
+      return OtpResult(
+        hasOtp: true,
+        otpValue: otp,
+        source: OtpSource.otpPattern,
+      );
+    }
+    return const OtpResult.none();
+  }
 
   /// Extracts OTP from SMS text body if confidently recognized.
   ///
   /// Returns the extracted numeric string (4, 5, 6, or 8 digits) or `null`.
   String? extractOtp(String body) {
-    // 1. Guard: If no OTP keywords exist, quickly return null without evaluating regex
-    if (!_otpKeywordRegex.hasMatch(body)) {
+    // 1. Guard: If no OTP keywords exist, quickly return null without evaluating candidates
+    final keywordMatches = _otpKeywordRegex.allMatches(body).toList();
+    if (keywordMatches.isEmpty) {
       return null;
     }
 
-    // 2. Try Pattern 1: Keyword then Code
-    final matches1 = _keywordThenCode.allMatches(body);
-    for (final match in matches1) {
-      final code = match.group(1);
-      final matchStart = match.end - (code?.length ?? 0);
-      if (_isValidOtpCandidate(body, matchStart, match.end, code)) {
-        return code;
+    // 2. Find all 4-8 digit numeric candidates
+    final candidateMatches = _numericCandidateRegex.allMatches(body).toList();
+    if (candidateMatches.isEmpty) {
+      return null;
+    }
+
+    String? bestCandidate;
+    int shortestDistance = 999999;
+
+    for (final candidate in candidateMatches) {
+      final code = candidate.group(1);
+      if (code == null) continue;
+
+      // Supported lengths: 4, 5, 6, 8 digits
+      final len = code.length;
+      if (len != 4 && len != 5 && len != 6 && len != 8) {
+        continue;
+      }
+
+      final matchStart = candidate.start;
+      final matchEnd = candidate.end;
+
+      if (!_isValidOtpCandidate(body, matchStart, matchEnd, code)) {
+        continue;
+      }
+
+      // Check distance to the closest OTP keyword
+      int minDistanceToKeyword = 999999;
+      for (final kw in keywordMatches) {
+        final int dist;
+        if (matchStart >= kw.end) {
+          dist = matchStart - kw.end; // Keyword before code
+        } else if (matchEnd <= kw.start) {
+          dist = kw.start - matchEnd; // Code before keyword
+        } else {
+          dist = 0;
+        }
+        minDistanceToKeyword = min(minDistanceToKeyword, dist);
+      }
+
+      // Bounded scanning: Candidate must be within 70 characters of an OTP keyword
+      if (minDistanceToKeyword <= 70 && minDistanceToKeyword < shortestDistance) {
+        shortestDistance = minDistanceToKeyword;
+        bestCandidate = code;
       }
     }
 
-    // 3. Try Pattern 2: Code then Keyword
-    final matches2 = _codeThenKeyword.allMatches(body);
-    for (final match in matches2) {
-      final code = match.group(1);
-      final matchStart = match.start;
-      final matchEnd = match.start + (code?.length ?? 0);
-      if (_isValidOtpCandidate(body, matchStart, matchEnd, code)) {
-        return code;
-      }
-    }
-
-    return null;
+    return bestCandidate;
   }
 
-  /// Verifies candidate code length and validates context does not resemble false-positives.
+  /// Verifies context does not resemble false-positives (currency, account, order, date).
   bool _isValidOtpCandidate(
     String body,
     int matchStart,
     int matchEnd,
-    String? code,
+    String code,
   ) {
-    if (code == null) return false;
-
-    // Supported lengths: 4, 5, 6, 8 digits
-    final len = code.length;
-    if (len != 4 && len != 5 && len != 6 && len != 8) {
-      return false;
-    }
-
-    // Check pre-context up to 20 characters before match
-    final preContextStart = (matchStart - 20).clamp(0, matchStart);
+    // Check pre-context up to 25 characters before match
+    final preContextStart = (matchStart - 25).clamp(0, matchStart);
     final preContext = body
         .substring(preContextStart, matchStart)
         .toLowerCase()
@@ -93,6 +122,16 @@ class OTPClassifier {
     if (_currencyPrefix.hasMatch(preContext)) return false;
     if (_accountPrefix.hasMatch(preContext)) return false;
     if (_orderPrefix.hasMatch(preContext)) return false;
+    if (_datePrefix.hasMatch(preContext)) return false;
+
+    // Check post-context up to 10 characters after match
+    final postContextEnd = (matchEnd + 10).clamp(matchEnd, body.length);
+    final postContext = body
+        .substring(matchEnd, postContextEnd)
+        .toLowerCase()
+        .trim();
+
+    if (_currencySuffix.hasMatch(postContext)) return false;
 
     return true;
   }

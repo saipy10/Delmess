@@ -14,7 +14,8 @@ object SmsReader {
         Telephony.Sms.ADDRESS,
         Telephony.Sms.BODY,
         Telephony.Sms.DATE,
-        Telephony.Sms.READ
+        Telephony.Sms.READ,
+        Telephony.Sms.SUBSCRIPTION_ID
     )
 
     fun getTotalSmsCount(context: Context): Int {
@@ -75,6 +76,7 @@ object SmsReader {
                 val bodyIndex = cursor.getColumnIndex(Telephony.Sms.BODY)
                 val dateIndex = cursor.getColumnIndex(Telephony.Sms.DATE)
                 val readIndex = cursor.getColumnIndex(Telephony.Sms.READ)
+                val subIdIndex = cursor.getColumnIndex(Telephony.Sms.SUBSCRIPTION_ID)
 
                 while (cursor.moveToNext()) {
                     val id = if (idIndex != -1) cursor.getString(idIndex) ?: "" else ""
@@ -83,6 +85,8 @@ object SmsReader {
                     val body = if (bodyIndex != -1) cursor.getString(bodyIndex) ?: "" else ""
                     val date = if (dateIndex != -1) cursor.getLong(dateIndex) else System.currentTimeMillis()
                     val read = if (readIndex != -1) cursor.getInt(readIndex) == 1 else false
+                    val subId = if (subIdIndex != -1 && !cursor.isNull(subIdIndex)) cursor.getInt(subIdIndex) else -1
+                    val simSlot = if (subId <= 1) (if (subId < 0) 0 else subId) else (subId - 1).coerceIn(0, 1)
 
                     val item = mapOf<String, Any?>(
                         "id" to id,
@@ -90,7 +94,9 @@ object SmsReader {
                         "sender" to address,
                         "body" to body,
                         "receivedAt" to date,
-                        "isRead" to read
+                        "isRead" to read,
+                        "subId" to subId,
+                        "simSlot" to simSlot
                     )
                     messages.add(item)
                 }

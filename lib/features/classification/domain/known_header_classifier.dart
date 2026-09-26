@@ -1,6 +1,9 @@
 import 'package:delmess/core/constants/category_constants.dart';
 import 'package:delmess/features/classification/domain/classification_result.dart';
+import 'package:delmess/features/classification/domain/otp_result.dart';
 import 'package:delmess/features/classification/domain/parsed_header.dart';
+import 'package:delmess/features/classification/domain/payment_result.dart';
+import 'package:delmess/features/classification/domain/payment_type.dart';
 import 'package:delmess/features/messages/data/sender_metadata_repository.dart';
 import 'package:delmess/features/messages/domain/classification_reason.dart';
 import 'package:delmess/features/messages/domain/sender_metadata.dart';
@@ -56,6 +59,8 @@ class KnownHeaderClassifier {
     ParsedHeader header,
     SenderMetadata? metadata, {
     String? detectedOtp,
+    PaymentResult payment = const PaymentResult.none(),
+    OtpResult? otp,
   }) {
     if (metadata == null) return null;
 
@@ -84,13 +89,26 @@ class KnownHeaderClassifier {
 
     if (category == null) return null;
 
+    final resolvedOtp =
+        otp ??
+        (detectedOtp != null
+            ? OtpResult(
+                hasOtp: true,
+                otpValue: detectedOtp,
+                source: OtpSource.otpPattern,
+              )
+            : const OtpResult.none());
+
     return ClassificationResult(
       category: category,
+      categorySource: CategorySource.knownHeader,
       confidence: 0.90,
       reason: ClassificationReason.knownHeader,
+      reasonDescription: 'Recognized brand header (${metadata.brand})',
       parsedHeader: header,
       brand: metadata.brand,
-      detectedOtp: detectedOtp,
+      payment: payment,
+      otp: resolvedOtp,
     );
   }
 }

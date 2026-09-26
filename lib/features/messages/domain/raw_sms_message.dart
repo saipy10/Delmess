@@ -6,6 +6,9 @@ class RawSmsMessage {
   final String body;
   final int receivedAtMillis;
   final bool isRead;
+  final int? subId;
+  final int? simSlot;
+  final String? carrierName;
 
   const RawSmsMessage({
     required this.id,
@@ -14,6 +17,9 @@ class RawSmsMessage {
     required this.body,
     required this.receivedAtMillis,
     this.isRead = false,
+    this.subId,
+    this.simSlot,
+    this.carrierName,
   });
 
   factory RawSmsMessage.fromMap(Map<dynamic, dynamic> map) {
@@ -27,6 +33,13 @@ class RawSmsMessage {
           : int.tryParse(map['receivedAt']?.toString() ?? '') ??
                 DateTime.now().millisecondsSinceEpoch,
       isRead: map['isRead'] == true || map['isRead'] == 1,
+      subId: map['subId'] is int
+          ? map['subId'] as int
+          : int.tryParse(map['subId']?.toString() ?? ''),
+      simSlot: map['simSlot'] is int
+          ? map['simSlot'] as int
+          : int.tryParse(map['simSlot']?.toString() ?? ''),
+      carrierName: map['carrierName']?.toString(),
     );
   }
 
@@ -38,6 +51,9 @@ class RawSmsMessage {
       'body': body,
       'receivedAt': receivedAtMillis,
       'isRead': isRead,
+      'subId': subId,
+      'simSlot': simSlot,
+      'carrierName': carrierName,
     };
   }
 
@@ -51,7 +67,10 @@ class RawSmsMessage {
           sender == other.sender &&
           body == other.body &&
           receivedAtMillis == other.receivedAtMillis &&
-          isRead == other.isRead;
+          isRead == other.isRead &&
+          subId == other.subId &&
+          simSlot == other.simSlot &&
+          carrierName == other.carrierName;
 
   @override
   int get hashCode =>
@@ -60,5 +79,8 @@ class RawSmsMessage {
       sender.hashCode ^
       body.hashCode ^
       receivedAtMillis.hashCode ^
-      isRead.hashCode;
+      isRead.hashCode ^
+      subId.hashCode ^
+      simSlot.hashCode ^
+      carrierName.hashCode;
 }

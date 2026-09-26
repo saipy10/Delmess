@@ -915,26 +915,69 @@ class MessageDetailScreen extends ConsumerWidget {
                 ),
                 _buildDetailRow(
                   theme,
-                  'Suffix',
-                  message.messageTypeSuffix != null
-                      ? '-${message.messageTypeSuffix}'
-                      : 'None',
-                ),
-                _buildDetailRow(
-                  theme,
                   'Category',
                   message.category.displayName,
                 ),
                 _buildDetailRow(
                   theme,
-                  'Confidence',
-                  '${(message.classificationConfidence * 100).toInt()}%',
+                  'Category Source',
+                  message.categorySource,
                 ),
                 _buildDetailRow(
                   theme,
-                  'Reason',
-                  message.effectiveReasonDescription,
+                  'TRAI Suffix',
+                  message.traiSuffix != null
+                      ? '-${message.traiSuffix}'
+                      : (message.messageTypeSuffix != null
+                          ? '-${message.messageTypeSuffix}'
+                          : 'None'),
                 ),
+                _buildDetailRow(
+                  theme,
+                  'Operator Prefix',
+                  message.operatorPrefix ?? 'None',
+                ),
+                _buildDetailRow(
+                  theme,
+                  'Brand',
+                  message.brandName.isNotEmpty ? message.brandName : 'None',
+                ),
+                const Divider(),
+                _buildDetailRow(
+                  theme,
+                  'Payment Event',
+                  message.isPayment ? 'Yes' : 'No',
+                ),
+                if (message.isPayment) ...[
+                  _buildDetailRow(
+                    theme,
+                    'Payment Type',
+                    message.paymentType.displayName,
+                  ),
+                  _buildDetailRow(
+                    theme,
+                    'Payment Direction',
+                    message.paymentDirection.displayName,
+                  ),
+                  _buildDetailRow(
+                    theme,
+                    'Payment Source',
+                    message.paymentSource,
+                  ),
+                ],
+                const Divider(),
+                _buildDetailRow(
+                  theme,
+                  'OTP Detected',
+                  message.hasOtp ? 'Yes' : 'No',
+                ),
+                if (message.hasOtp) ...[
+                  _buildDetailRow(
+                    theme,
+                    'OTP Source',
+                    message.otpSource,
+                  ),
+                ],
                 _buildDetailRow(
                   theme,
                   'Classifier Version',

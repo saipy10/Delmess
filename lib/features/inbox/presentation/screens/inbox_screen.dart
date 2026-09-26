@@ -1,7 +1,5 @@
 import 'package:delmess/core/constants/app_strings.dart';
 import 'package:delmess/core/constants/category_constants.dart';
-import 'package:delmess/core/database/database_providers.dart';
-import 'package:delmess/core/database/database_seed_service.dart';
 import 'package:delmess/core/routing/route_paths.dart';
 import 'package:delmess/core/selection/bulk_action_toolbar.dart';
 import 'package:delmess/core/selection/selection_app_bar.dart';
@@ -88,23 +86,20 @@ class InboxScreen extends ConsumerWidget {
                             ),
                           );
                         }
-                      } else if (value == 'reseed') {
-                        final seeder = DatabaseSeedService(
-                          messageRepo: ref.read(driftMessageRepositoryProvider),
-                          labelRepo: ref.read(driftLabelRepositoryProvider),
-                          senderRepo: ref.read(
-                            driftSenderMetadataRepositoryProvider,
-                          ),
-                          db: ref.read(appDatabaseProvider),
-                        );
-                        await seeder.resetAndSeed();
+                      } else if (value == 'default_sms') {
+                        final permService = ref.read(smsPermissionServiceProvider);
+                        final isDefault = await permService.isDefaultSmsApp();
                         if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Sample SMS dataset re-seeded!'),
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
+                          if (isDefault) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('DelMess is already your default SMS app!'),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                          } else {
+                            await permService.requestDefaultSmsApp();
+                          }
                         }
                       }
                     },
@@ -172,12 +167,12 @@ class InboxScreen extends ConsumerWidget {
                       ),
                       const PopupMenuDivider(),
                       const PopupMenuItem(
-                        value: 'reseed',
+                        value: 'default_sms',
                         child: Row(
                           children: [
-                            Icon(Icons.refresh, size: 20),
+                            Icon(Icons.mark_email_read_outlined, size: 20),
                             SizedBox(width: 12),
-                            Text('Reset & Seed Demo Data'),
+                            Text('Default SMS App Status'),
                           ],
                         ),
                       ),
@@ -322,7 +317,6 @@ class InboxScreen extends ConsumerWidget {
       case CategoryType.other:
         return 'No personal or other messages';
     }
-    return 'No messages';
   }
 
   String _getEmptyMessage(CategoryType? category) {
@@ -341,6 +335,5 @@ class InboxScreen extends ConsumerWidget {
       case CategoryType.other:
         return 'Direct messages and unclassified personal SMS will appear here.';
     }
-    return 'SMS will appear here automatically.';
   }
 }

@@ -26,6 +26,20 @@ class Messages extends Table {
   TextColumn get rawSender => text().nullable()();
   TextColumn get normalizedSender => text().nullable()();
   TextColumn get brandName => text().nullable()();
+  TextColumn get categorySource =>
+      text().withDefault(const Constant('FALLBACK'))();
+  TextColumn get traiSuffix => text().nullable()();
+  BoolColumn get isPayment => boolean().withDefault(const Constant(false))();
+  TextColumn get paymentType =>
+      text().withDefault(const Constant('NONE'))();
+  TextColumn get paymentDirection =>
+      text().withDefault(const Constant('NONE'))();
+  TextColumn get paymentSource =>
+      text().withDefault(const Constant('NONE'))();
+  BoolColumn get hasOtp => boolean().withDefault(const Constant(false))();
+  TextColumn get otpValue => text().nullable()();
+  TextColumn get otpSource =>
+      text().withDefault(const Constant('NONE'))();
   IntColumn get classificationVersion =>
       integer().withDefault(const Constant(1))();
   DateTimeColumn get createdAt => dateTime()();
@@ -46,6 +60,8 @@ class Messages extends Table {
     TableIndex(name: 'idx_messages_is_pinned', columns: {isPinned}),
     TableIndex(name: 'idx_messages_is_archived', columns: {isArchived}),
     TableIndex(name: 'idx_messages_is_deleted', columns: {isDeleted}),
+    TableIndex(name: 'idx_messages_is_payment', columns: {isPayment}),
+    TableIndex(name: 'idx_messages_has_otp', columns: {hasOtp}),
     TableIndex(
       name: 'idx_messages_inbox_query',
       columns: {isDeleted, isArchived, isPinned, receivedAt},

@@ -5,17 +5,21 @@ import 'package:delmess/features/classification/domain/header_parser.dart';
 import 'package:delmess/features/classification/domain/header_suffix_classifier.dart';
 import 'package:delmess/features/classification/domain/known_header_classifier.dart';
 import 'package:delmess/features/classification/domain/otp_classifier.dart';
+import 'package:delmess/features/classification/domain/payment_classifier.dart';
+import 'package:delmess/features/classification/domain/payment_type.dart';
 import 'package:delmess/features/classification/domain/sms_classifier.dart';
 import 'package:delmess/features/messages/data/sender_metadata_repository.dart';
 import 'package:delmess/features/messages/domain/classification_reason.dart';
 
 /// Central classification engine orchestrating Indian SMS intelligence.
 ///
-/// Follows strict hierarchical priority:
-/// 1. Official TRAI suffix (-T, -S, -P, -G) [Confidence: 1.0, Priority: Highest]
-/// 2. Known header metadata & brand resolution [Confidence: 0.90]
-/// 3. Conservative content rules [Confidence: 0.70 - 0.85]
-/// 4. Fallback / Other [Confidence: 0.0]
+/// Implements Phase 7 multi-dimensional classification architecture:
+/// 1. Primary Category: Determined by TRAI suffix (-T, -S, -P, -G),
+///    known header metadata, or conservative content fallbacks.
+/// 2. Payment/Transaction Detection: Independent dimension answering whether
+///    the message represents an actual financial transaction event.
+/// 3. OTP Detection: Independent dimension with bounded scanning and false-positive guards.
+/// 4. Brand Resolution: Independent lookup that does not override TRAI classification.
 class ClassificationEngine {
   final HeaderParser headerParser;
   final HeaderSuffixClassifier suffixClassifier;
@@ -23,6 +27,7 @@ class ClassificationEngine {
   final BrandResolver brandResolver;
   final ContentRuleClassifier contentRuleClassifier;
   final OTPClassifier otpClassifier;
+  final PaymentClassifier paymentClassifier;
   final SmsClassifier? smsClassifier;
 
   ClassificationEngine({
@@ -32,6 +37,7 @@ class ClassificationEngine {
     BrandResolver? brandResolver,
     this.contentRuleClassifier = const ContentRuleClassifier(),
     this.otpClassifier = const OTPClassifier(),
+    this.paymentClassifier = const PaymentClassifier(),
     SenderMetadataRepository? metadataRepository,
     this.smsClassifier,
   }) : knownHeaderClassifier =
@@ -40,37 +46,43 @@ class ClassificationEngine {
        brandResolver =
            brandResolver ?? BrandResolver(repository: metadataRepository);
 
-  /// Asynchronously classifies an SMS message using database metadata if needed.
+  /// Asynchronously classifies an SMS message across all independent dimensions.
   Future<ClassificationResult> classify({
     required String sender,
     required String body,
   }) async {
-    // 1. Parse header
+    // 1. Parse header (TRAI operator prefix, clean header, suffix)
     final parsed = headerParser.parse(sender);
 
-    // 2. Detect OTP (if present)
-    final otp = otpClassifier.extractOtp(body);
+    // 2. Independent Payment Detector: Evaluates financial transaction execution
+    final payment = paymentClassifier.classify(body, parsedHeader: parsed);
 
-    // 3. Brand / Known metadata lookup
+    // 3. Independent OTP Detector: Bounded scan with false-positive safeguards
+    final otp = otpClassifier.classify(body);
+
+    // 4. Independent Brand Resolution (does not override category)
     final meta = await knownHeaderClassifier.lookupMetadata(parsed.cleanHeader);
     final brandInfo = await brandResolver.resolve(parsed.cleanHeader);
     final brand = meta?.brand ?? brandInfo?.brandName;
 
-    // 4. Priority 1: Official Suffix (Always wins over body keywords)
+    // 5. Determine Primary Category
+    // Priority 1: Official Suffix (-T, -S, -P, -G) [Highest Authority]
     final suffixResult = suffixClassifier.classify(
       parsed,
       brand: brand,
-      detectedOtp: otp,
+      payment: payment,
+      otp: otp,
     );
     if (suffixResult != null) {
       return suffixResult;
     }
 
-    // 5. Priority 2: Known Header Database Metadata & Brand Resolution
+    // Priority 2: Known Header Database Metadata & Brand Resolution
     final knownResult = knownHeaderClassifier.classifyWithMetadata(
       parsed,
       meta,
-      detectedOtp: otp,
+      payment: payment,
+      otp: otp,
     );
     if (knownResult != null) {
       return knownResult;
@@ -79,31 +91,35 @@ class ClassificationEngine {
     if (parsed.isCommercial && brandInfo?.defaultCategory != null) {
       return ClassificationResult(
         category: brandInfo!.defaultCategory!,
+        categorySource: CategorySource.knownHeader,
         confidence: 0.90,
         reason: ClassificationReason.knownHeader,
         reasonDescription: 'Recognized brand header ($brand)',
         parsedHeader: parsed,
         brand: brand,
-        detectedOtp: otp,
+        payment: payment,
+        otp: otp,
       );
     }
 
-    // 6. Priority 3: Conservative Content Keyword Rules
+    // Priority 3: Conservative Content Keyword Rules
     final contentResult = contentRuleClassifier.classify(
       body,
       parsed,
       brand: brand,
-      detectedOtp: otp,
+      payment: payment,
+      otp: otp,
     );
     if (contentResult != null) {
       return contentResult;
     }
 
-    // 7. Fallback: Other / Unknown
+    // Fallback: Other / Unknown
     return ClassificationResult.unknown(
       parsedHeader: parsed,
       brand: brand,
-      detectedOtp: otp,
+      payment: payment,
+      otp: otp,
     );
   }
 
@@ -113,7 +129,8 @@ class ClassificationEngine {
     required String body,
   }) {
     final parsed = headerParser.parse(sender);
-    final otp = otpClassifier.extractOtp(body);
+    final payment = paymentClassifier.classify(body, parsedHeader: parsed);
+    final otp = otpClassifier.classify(body);
     final meta = knownHeaderClassifier.lookupCached(parsed.cleanHeader);
     final brandInfo = brandResolver.resolveSync(parsed.cleanHeader);
     final brand = meta?.brand ?? brandInfo?.brandName;
@@ -121,7 +138,8 @@ class ClassificationEngine {
     final suffixResult = suffixClassifier.classify(
       parsed,
       brand: brand,
-      detectedOtp: otp,
+      payment: payment,
+      otp: otp,
     );
     if (suffixResult != null) {
       return suffixResult;
@@ -130,7 +148,8 @@ class ClassificationEngine {
     final knownResult = knownHeaderClassifier.classifyWithMetadata(
       parsed,
       meta,
-      detectedOtp: otp,
+      payment: payment,
+      otp: otp,
     );
     if (knownResult != null) {
       return knownResult;
@@ -139,12 +158,14 @@ class ClassificationEngine {
     if (parsed.isCommercial && brandInfo?.defaultCategory != null) {
       return ClassificationResult(
         category: brandInfo!.defaultCategory!,
+        categorySource: CategorySource.knownHeader,
         confidence: 0.90,
         reason: ClassificationReason.knownHeader,
         reasonDescription: 'Recognized brand header ($brand)',
         parsedHeader: parsed,
         brand: brand,
-        detectedOtp: otp,
+        payment: payment,
+        otp: otp,
       );
     }
 
@@ -152,7 +173,8 @@ class ClassificationEngine {
       body,
       parsed,
       brand: brand,
-      detectedOtp: otp,
+      payment: payment,
+      otp: otp,
     );
     if (contentResult != null) {
       return contentResult;
@@ -161,7 +183,8 @@ class ClassificationEngine {
     return ClassificationResult.unknown(
       parsedHeader: parsed,
       brand: brand,
-      detectedOtp: otp,
+      payment: payment,
+      otp: otp,
     );
   }
 }

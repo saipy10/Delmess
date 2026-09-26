@@ -1,4 +1,5 @@
 import 'package:delmess/core/constants/category_constants.dart';
+import 'package:delmess/features/classification/domain/payment_type.dart';
 import 'package:delmess/features/labels/domain/label_model.dart';
 import 'package:delmess/features/messages/domain/classification_reason.dart';
 
@@ -15,6 +16,21 @@ class SmsMessage {
   final String body;
   final DateTime receivedAt;
   final CategoryType category;
+  final String categorySource;
+  final String? traiSuffix;
+
+  // Independent Payment Dimension
+  final bool isPayment;
+  final PaymentType paymentType;
+  final PaymentDirection paymentDirection;
+  final String paymentSource;
+
+  // Independent OTP Dimension
+  final bool hasOtp;
+  final String? otpValue;
+  final String otpSource;
+
+  // Compatibility fields
   final double classificationConfidence;
   final ClassificationReason classificationReason;
   final String? reasonDescription;
@@ -44,6 +60,15 @@ class SmsMessage {
     required this.body,
     required this.receivedAt,
     required this.category,
+    this.categorySource = CategorySource.fallback,
+    String? traiSuffix,
+    this.isPayment = false,
+    this.paymentType = PaymentType.none,
+    this.paymentDirection = PaymentDirection.none,
+    this.paymentSource = PaymentSource.none,
+    bool? hasOtp,
+    String? otpValue,
+    this.otpSource = OtpSource.none,
     this.classificationConfidence = 1.0,
     this.classificationReason = ClassificationReason.unknown,
     this.reasonDescription,
@@ -60,7 +85,9 @@ class SmsMessage {
     this.labels = const [],
     required this.createdAt,
     required this.updatedAt,
-  });
+  }) : traiSuffix = traiSuffix ?? messageTypeSuffix,
+       otpValue = otpValue ?? otp,
+       hasOtp = hasOtp ?? (otp != null && otp.length > 0 || (otpValue != null && otpValue.length > 0));
 
   /// Resolved brand name with fallback to brand or empty string.
   String get brandName => brandNameField ?? brand ?? '';
@@ -87,6 +114,15 @@ class SmsMessage {
     String? body,
     DateTime? receivedAt,
     CategoryType? category,
+    String? categorySource,
+    String? traiSuffix,
+    bool? isPayment,
+    PaymentType? paymentType,
+    PaymentDirection? paymentDirection,
+    String? paymentSource,
+    bool? hasOtp,
+    String? otpValue,
+    String? otpSource,
     double? classificationConfidence,
     ClassificationReason? classificationReason,
     String? reasonDescription,
@@ -116,6 +152,15 @@ class SmsMessage {
       body: body ?? this.body,
       receivedAt: receivedAt ?? this.receivedAt,
       category: category ?? this.category,
+      categorySource: categorySource ?? this.categorySource,
+      traiSuffix: traiSuffix ?? this.traiSuffix,
+      isPayment: isPayment ?? this.isPayment,
+      paymentType: paymentType ?? this.paymentType,
+      paymentDirection: paymentDirection ?? this.paymentDirection,
+      paymentSource: paymentSource ?? this.paymentSource,
+      hasOtp: hasOtp ?? this.hasOtp,
+      otpValue: otpValue ?? this.otpValue,
+      otpSource: otpSource ?? this.otpSource,
       classificationConfidence:
           classificationConfidence ?? this.classificationConfidence,
       classificationReason: classificationReason ?? this.classificationReason,
@@ -150,6 +195,12 @@ class SmsMessage {
           body == other.body &&
           receivedAt == other.receivedAt &&
           category == other.category &&
+          categorySource == other.categorySource &&
+          traiSuffix == other.traiSuffix &&
+          isPayment == other.isPayment &&
+          paymentType == other.paymentType &&
+          paymentDirection == other.paymentDirection &&
+          hasOtp == other.hasOtp &&
           classificationConfidence == other.classificationConfidence &&
           classificationReason == other.classificationReason &&
           isRead == other.isRead &&
@@ -175,6 +226,12 @@ class SmsMessage {
       body.hashCode ^
       receivedAt.hashCode ^
       category.hashCode ^
+      categorySource.hashCode ^
+      traiSuffix.hashCode ^
+      isPayment.hashCode ^
+      paymentType.hashCode ^
+      paymentDirection.hashCode ^
+      hasOtp.hashCode ^
       classificationConfidence.hashCode ^
       classificationReason.hashCode ^
       isRead.hashCode ^

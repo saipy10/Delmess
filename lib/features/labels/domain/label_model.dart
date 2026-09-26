@@ -21,8 +21,38 @@ class LabelModel {
   });
 
   Color get color => Color(colorValue);
-  // ignore: non_const_argument_for_const_parameter
-  IconData get icon => IconData(iconCode, fontFamily: 'MaterialIcons');
+
+  static const Map<int, IconData> _iconMap = {
+    0xe362: Icons.label_outline,
+    0xe363: Icons.label,
+    0xe040: Icons.account_balance,
+    0xf33c: Icons.security,
+    0xe395: Icons.local_shipping,
+    0xe3a1: Icons.local_offer,
+    0xe5f8: Icons.star,
+    0xe5f9: Icons.star,
+    0xe5fa: Icons.star_border,
+    0xe69f: Icons.work,
+    0xe8cc: Icons.shopping_bag,
+    0xe8f6: Icons.receipt_long,
+    0xe897: Icons.lock,
+    0xe3ab: Icons.mail,
+    0xe873: Icons.description,
+    0xe8b8: Icons.settings,
+    0xe5cd: Icons.favorite,
+    0xe85d: Icons.bookmark,
+    0xe52e: Icons.flight,
+    0xe530: Icons.directions_car,
+    0xe532: Icons.train,
+    0xe556: Icons.restaurant,
+    0xe54c: Icons.medical_services,
+    0xe32a: Icons.home,
+    0xe0b0: Icons.call,
+    0xe0e1: Icons.credit_card,
+    0xe227: Icons.payment,
+  };
+
+  IconData get icon => _iconMap[iconCode] ?? Icons.label_outline;
 
   LabelModel copyWith({
     String? id,

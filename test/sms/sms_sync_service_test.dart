@@ -1,8 +1,9 @@
 import 'package:delmess/core/database/app_database.dart';
 import 'package:delmess/core/services/sms_permission_service.dart';
 import 'package:delmess/features/messages/data/message_repository.dart';
-import 'package:delmess/features/messages/data/sms_data_source.dart';
 import 'package:delmess/features/messages/data/sms_sync_service.dart';
+import '../helpers/fake_sms_data_source.dart';
+import '../helpers/fake_sms_permission_service.dart';
 import 'package:delmess/features/messages/domain/raw_sms_message.dart';
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';

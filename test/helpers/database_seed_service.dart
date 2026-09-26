@@ -8,6 +8,7 @@ import 'package:delmess/features/messages/domain/sender_metadata.dart';
 import 'package:delmess/features/messages/domain/sms_message.dart';
 import 'package:flutter/foundation.dart';
 
+/// Test-only database seed helper for widget and integration tests.
 class DatabaseSeedService {
   final MessageRepository messageRepo;
   final LabelRepository labelRepo;
@@ -21,13 +22,9 @@ class DatabaseSeedService {
     required this.db,
   });
 
-  /// Check if the database needs initial seeding
-  Future<void> seedIfEmpty() async {
-    final messages = await messageRepo.getAllMessages();
-    if (messages.isEmpty) {
-      debugPrint('Database is empty. Seeding realistic SMS dataset...');
-      await resetAndSeed();
-    }
+  /// Reseeds sample test dataset (Strictly for unit and widget testing).
+  Future<void> seedForTesting() async {
+    await resetAndSeed();
   }
 
   /// Completely clears and reseeds sample development dataset

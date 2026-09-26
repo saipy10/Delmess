@@ -1,9 +1,11 @@
 import 'package:delmess/core/database/app_database.dart';
 import 'package:delmess/features/classification/domain/message_category.dart';
+import 'package:delmess/features/classification/domain/payment_type.dart';
 import 'package:delmess/features/inbox/domain/sms_conversation.dart';
 import 'package:delmess/features/labels/domain/label_model.dart';
 import 'package:delmess/features/messages/domain/classification_reason.dart';
 import 'package:delmess/features/messages/domain/sms_message.dart';
+import 'package:delmess/core/utils/string_utils.dart';
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -369,9 +371,23 @@ class DriftMessageRepository implements MessageRepository {
   @override
   Future<void> insertMessages(List<SmsMessage> messages) async {
     if (messages.isEmpty) return;
-    await _db.transaction(() async {
+    await _db.batch((batch) {
+      batch.insertAllOnConflictUpdate(
+        _db.messages,
+        messages.map(_messageToCompanion).toList(),
+      );
       for (final msg in messages) {
-        await insertMessage(msg);
+        if (msg.labels.isNotEmpty) {
+          batch.insertAllOnConflictUpdate(
+            _db.messageLabels,
+            msg.labels.map(
+              (label) => MessageLabelsCompanion(
+                messageId: Value(msg.id),
+                labelId: Value(label.id),
+              ),
+            ),
+          );
+        }
       }
     });
   }
@@ -781,6 +797,15 @@ class DriftMessageRepository implements MessageRepository {
       body: row.body,
       receivedAt: row.receivedAt,
       category: CategoryTypeExtension.fromString(row.category),
+      categorySource: row.categorySource,
+      traiSuffix: row.traiSuffix ?? row.messageTypeSuffix,
+      isPayment: row.isPayment,
+      paymentType: PaymentType.fromString(row.paymentType),
+      paymentDirection: PaymentDirection.fromString(row.paymentDirection),
+      paymentSource: row.paymentSource,
+      hasOtp: row.hasOtp,
+      otpValue: row.otpValue ?? row.otp ?? StringUtils.extractOtp(row.body),
+      otpSource: row.otpSource,
       classificationConfidence: row.classificationConfidence,
       classificationReason: ClassificationReason.fromString(
         row.classificationReason,
@@ -791,10 +816,11 @@ class DriftMessageRepository implements MessageRepository {
       isPinned: row.isPinned,
       isArchived: row.isArchived,
       isDeleted: row.isDeleted,
-      otp: row.otp,
+      // Phase 2 Privacy: Extract OTP dynamically on-the-fly; never rely on DB persistence
+      otp: row.otp ?? StringUtils.extractOtp(row.body),
       operatorPrefix: row.operatorPrefix,
       parsedHeader: row.parsedHeader,
-      messageTypeSuffix: row.messageTypeSuffix,
+      messageTypeSuffix: row.messageTypeSuffix ?? row.traiSuffix,
       classificationVersion: row.classificationVersion,
       labels: labels,
       createdAt: row.createdAt,
@@ -815,6 +841,15 @@ class DriftMessageRepository implements MessageRepository {
       body: Value(m.body),
       receivedAt: Value(m.receivedAt),
       category: Value(m.category.name),
+      categorySource: Value(m.categorySource),
+      traiSuffix: Value(m.traiSuffix ?? m.messageTypeSuffix),
+      isPayment: Value(m.isPayment),
+      paymentType: Value(m.paymentType.dbValue),
+      paymentDirection: Value(m.paymentDirection.dbValue),
+      paymentSource: Value(m.paymentSource),
+      hasOtp: Value(m.hasOtp),
+      otpValue: const Value(null), // For Phase 2 privacy, do not persist raw OTP
+      otpSource: Value(m.otpSource),
       classificationConfidence: Value(m.classificationConfidence),
       classificationReason: Value(m.effectiveReasonDescription),
       isRead: Value(m.isRead),
@@ -822,10 +857,11 @@ class DriftMessageRepository implements MessageRepository {
       isPinned: Value(m.isPinned),
       isArchived: Value(m.isArchived),
       isDeleted: Value(m.isDeleted),
-      otp: Value(m.otp),
+      // Phase 2 Privacy: Do NOT persist extracted OTPs into the SQLite database file
+      otp: const Value(null),
       operatorPrefix: Value(m.operatorPrefix),
       parsedHeader: Value(m.parsedHeader),
-      messageTypeSuffix: Value(m.messageTypeSuffix),
+      messageTypeSuffix: Value(m.messageTypeSuffix ?? m.traiSuffix),
       classificationVersion: Value(m.classificationVersion),
       createdAt: Value(m.createdAt),
       updatedAt: Value(m.updatedAt),

@@ -1,6 +1,6 @@
 import 'package:delmess/core/constants/app_strings.dart';
 import 'package:delmess/core/database/database_providers.dart';
-import 'package:delmess/core/database/database_seed_service.dart';
+import 'helpers/database_seed_service.dart';
 import 'package:delmess/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

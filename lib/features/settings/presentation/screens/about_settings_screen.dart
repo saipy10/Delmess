@@ -1,6 +1,8 @@
 import 'package:delmess/core/constants/app_dimensions.dart';
 import 'package:delmess/core/constants/app_strings.dart';
+import 'package:delmess/core/routing/route_paths.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AboutSettingsScreen extends StatelessWidget {
   const AboutSettingsScreen({super.key});
@@ -69,11 +71,25 @@ class AboutSettingsScreen extends StatelessWidget {
             },
           ),
           const Divider(),
+          ListTile(
+            title: const Text('Privacy Policy'),
+            subtitle: const Text(
+              '100% on-device guarantee, data disclosures & public URL',
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => context.push(RoutePaths.settingsPrivacy),
+          ),
+          const Divider(),
           const ListTile(
             title: Text('Architecture & Tech Stack'),
             subtitle: Text(
-              'Built with Flutter, Material 3, Riverpod, and GoRouter.',
+              'Built with Flutter, Material 3, Riverpod, Drift ORM, and GoRouter.',
             ),
+          ),
+          const Divider(),
+          const ListTile(
+            title: Text('Developer Support & Contact'),
+            subtitle: Text('c7122867@gmail.com'),
           ),
         ],
       ),

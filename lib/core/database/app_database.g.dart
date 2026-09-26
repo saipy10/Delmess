@@ -259,6 +259,116 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _categorySourceMeta = const VerificationMeta(
+    'categorySource',
+  );
+  @override
+  late final GeneratedColumn<String> categorySource = GeneratedColumn<String>(
+    'category_source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('FALLBACK'),
+  );
+  static const VerificationMeta _traiSuffixMeta = const VerificationMeta(
+    'traiSuffix',
+  );
+  @override
+  late final GeneratedColumn<String> traiSuffix = GeneratedColumn<String>(
+    'trai_suffix',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isPaymentMeta = const VerificationMeta(
+    'isPayment',
+  );
+  @override
+  late final GeneratedColumn<bool> isPayment = GeneratedColumn<bool>(
+    'is_payment',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_payment" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _paymentTypeMeta = const VerificationMeta(
+    'paymentType',
+  );
+  @override
+  late final GeneratedColumn<String> paymentType = GeneratedColumn<String>(
+    'payment_type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('NONE'),
+  );
+  static const VerificationMeta _paymentDirectionMeta = const VerificationMeta(
+    'paymentDirection',
+  );
+  @override
+  late final GeneratedColumn<String> paymentDirection = GeneratedColumn<String>(
+    'payment_direction',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('NONE'),
+  );
+  static const VerificationMeta _paymentSourceMeta = const VerificationMeta(
+    'paymentSource',
+  );
+  @override
+  late final GeneratedColumn<String> paymentSource = GeneratedColumn<String>(
+    'payment_source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('NONE'),
+  );
+  static const VerificationMeta _hasOtpMeta = const VerificationMeta('hasOtp');
+  @override
+  late final GeneratedColumn<bool> hasOtp = GeneratedColumn<bool>(
+    'has_otp',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("has_otp" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _otpValueMeta = const VerificationMeta(
+    'otpValue',
+  );
+  @override
+  late final GeneratedColumn<String> otpValue = GeneratedColumn<String>(
+    'otp_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _otpSourceMeta = const VerificationMeta(
+    'otpSource',
+  );
+  @override
+  late final GeneratedColumn<String> otpSource = GeneratedColumn<String>(
+    'otp_source',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('NONE'),
+  );
   static const VerificationMeta _classificationVersionMeta =
       const VerificationMeta('classificationVersion');
   @override
@@ -316,6 +426,15 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     rawSender,
     normalizedSender,
     brandName,
+    categorySource,
+    traiSuffix,
+    isPayment,
+    paymentType,
+    paymentDirection,
+    paymentSource,
+    hasOtp,
+    otpValue,
+    otpSource,
     classificationVersion,
     createdAt,
     updatedAt,
@@ -493,6 +612,72 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         brandName.isAcceptableOrUnknown(data['brand_name']!, _brandNameMeta),
       );
     }
+    if (data.containsKey('category_source')) {
+      context.handle(
+        _categorySourceMeta,
+        categorySource.isAcceptableOrUnknown(
+          data['category_source']!,
+          _categorySourceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('trai_suffix')) {
+      context.handle(
+        _traiSuffixMeta,
+        traiSuffix.isAcceptableOrUnknown(data['trai_suffix']!, _traiSuffixMeta),
+      );
+    }
+    if (data.containsKey('is_payment')) {
+      context.handle(
+        _isPaymentMeta,
+        isPayment.isAcceptableOrUnknown(data['is_payment']!, _isPaymentMeta),
+      );
+    }
+    if (data.containsKey('payment_type')) {
+      context.handle(
+        _paymentTypeMeta,
+        paymentType.isAcceptableOrUnknown(
+          data['payment_type']!,
+          _paymentTypeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('payment_direction')) {
+      context.handle(
+        _paymentDirectionMeta,
+        paymentDirection.isAcceptableOrUnknown(
+          data['payment_direction']!,
+          _paymentDirectionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('payment_source')) {
+      context.handle(
+        _paymentSourceMeta,
+        paymentSource.isAcceptableOrUnknown(
+          data['payment_source']!,
+          _paymentSourceMeta,
+        ),
+      );
+    }
+    if (data.containsKey('has_otp')) {
+      context.handle(
+        _hasOtpMeta,
+        hasOtp.isAcceptableOrUnknown(data['has_otp']!, _hasOtpMeta),
+      );
+    }
+    if (data.containsKey('otp_value')) {
+      context.handle(
+        _otpValueMeta,
+        otpValue.isAcceptableOrUnknown(data['otp_value']!, _otpValueMeta),
+      );
+    }
+    if (data.containsKey('otp_source')) {
+      context.handle(
+        _otpSourceMeta,
+        otpSource.isAcceptableOrUnknown(data['otp_source']!, _otpSourceMeta),
+      );
+    }
     if (data.containsKey('classification_version')) {
       context.handle(
         _classificationVersionMeta,
@@ -615,6 +800,42 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
         DriftSqlType.string,
         data['${effectivePrefix}brand_name'],
       ),
+      categorySource: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category_source'],
+      )!,
+      traiSuffix: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}trai_suffix'],
+      ),
+      isPayment: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_payment'],
+      )!,
+      paymentType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payment_type'],
+      )!,
+      paymentDirection: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payment_direction'],
+      )!,
+      paymentSource: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}payment_source'],
+      )!,
+      hasOtp: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}has_otp'],
+      )!,
+      otpValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}otp_value'],
+      ),
+      otpSource: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}otp_source'],
+      )!,
       classificationVersion: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}classification_version'],
@@ -659,6 +880,15 @@ class Message extends DataClass implements Insertable<Message> {
   final String? rawSender;
   final String? normalizedSender;
   final String? brandName;
+  final String categorySource;
+  final String? traiSuffix;
+  final bool isPayment;
+  final String paymentType;
+  final String paymentDirection;
+  final String paymentSource;
+  final bool hasOtp;
+  final String? otpValue;
+  final String otpSource;
   final int classificationVersion;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -685,6 +915,15 @@ class Message extends DataClass implements Insertable<Message> {
     this.rawSender,
     this.normalizedSender,
     this.brandName,
+    required this.categorySource,
+    this.traiSuffix,
+    required this.isPayment,
+    required this.paymentType,
+    required this.paymentDirection,
+    required this.paymentSource,
+    required this.hasOtp,
+    this.otpValue,
+    required this.otpSource,
     required this.classificationVersion,
     required this.createdAt,
     required this.updatedAt,
@@ -732,6 +971,19 @@ class Message extends DataClass implements Insertable<Message> {
     if (!nullToAbsent || brandName != null) {
       map['brand_name'] = Variable<String>(brandName);
     }
+    map['category_source'] = Variable<String>(categorySource);
+    if (!nullToAbsent || traiSuffix != null) {
+      map['trai_suffix'] = Variable<String>(traiSuffix);
+    }
+    map['is_payment'] = Variable<bool>(isPayment);
+    map['payment_type'] = Variable<String>(paymentType);
+    map['payment_direction'] = Variable<String>(paymentDirection);
+    map['payment_source'] = Variable<String>(paymentSource);
+    map['has_otp'] = Variable<bool>(hasOtp);
+    if (!nullToAbsent || otpValue != null) {
+      map['otp_value'] = Variable<String>(otpValue);
+    }
+    map['otp_source'] = Variable<String>(otpSource);
     map['classification_version'] = Variable<int>(classificationVersion);
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
@@ -776,6 +1028,19 @@ class Message extends DataClass implements Insertable<Message> {
       brandName: brandName == null && nullToAbsent
           ? const Value.absent()
           : Value(brandName),
+      categorySource: Value(categorySource),
+      traiSuffix: traiSuffix == null && nullToAbsent
+          ? const Value.absent()
+          : Value(traiSuffix),
+      isPayment: Value(isPayment),
+      paymentType: Value(paymentType),
+      paymentDirection: Value(paymentDirection),
+      paymentSource: Value(paymentSource),
+      hasOtp: Value(hasOtp),
+      otpValue: otpValue == null && nullToAbsent
+          ? const Value.absent()
+          : Value(otpValue),
+      otpSource: Value(otpSource),
       classificationVersion: Value(classificationVersion),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
@@ -816,6 +1081,15 @@ class Message extends DataClass implements Insertable<Message> {
       rawSender: serializer.fromJson<String?>(json['rawSender']),
       normalizedSender: serializer.fromJson<String?>(json['normalizedSender']),
       brandName: serializer.fromJson<String?>(json['brandName']),
+      categorySource: serializer.fromJson<String>(json['categorySource']),
+      traiSuffix: serializer.fromJson<String?>(json['traiSuffix']),
+      isPayment: serializer.fromJson<bool>(json['isPayment']),
+      paymentType: serializer.fromJson<String>(json['paymentType']),
+      paymentDirection: serializer.fromJson<String>(json['paymentDirection']),
+      paymentSource: serializer.fromJson<String>(json['paymentSource']),
+      hasOtp: serializer.fromJson<bool>(json['hasOtp']),
+      otpValue: serializer.fromJson<String?>(json['otpValue']),
+      otpSource: serializer.fromJson<String>(json['otpSource']),
       classificationVersion: serializer.fromJson<int>(
         json['classificationVersion'],
       ),
@@ -851,6 +1125,15 @@ class Message extends DataClass implements Insertable<Message> {
       'rawSender': serializer.toJson<String?>(rawSender),
       'normalizedSender': serializer.toJson<String?>(normalizedSender),
       'brandName': serializer.toJson<String?>(brandName),
+      'categorySource': serializer.toJson<String>(categorySource),
+      'traiSuffix': serializer.toJson<String?>(traiSuffix),
+      'isPayment': serializer.toJson<bool>(isPayment),
+      'paymentType': serializer.toJson<String>(paymentType),
+      'paymentDirection': serializer.toJson<String>(paymentDirection),
+      'paymentSource': serializer.toJson<String>(paymentSource),
+      'hasOtp': serializer.toJson<bool>(hasOtp),
+      'otpValue': serializer.toJson<String?>(otpValue),
+      'otpSource': serializer.toJson<String>(otpSource),
       'classificationVersion': serializer.toJson<int>(classificationVersion),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
@@ -880,6 +1163,15 @@ class Message extends DataClass implements Insertable<Message> {
     Value<String?> rawSender = const Value.absent(),
     Value<String?> normalizedSender = const Value.absent(),
     Value<String?> brandName = const Value.absent(),
+    String? categorySource,
+    Value<String?> traiSuffix = const Value.absent(),
+    bool? isPayment,
+    String? paymentType,
+    String? paymentDirection,
+    String? paymentSource,
+    bool? hasOtp,
+    Value<String?> otpValue = const Value.absent(),
+    String? otpSource,
     int? classificationVersion,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -913,6 +1205,15 @@ class Message extends DataClass implements Insertable<Message> {
         ? normalizedSender.value
         : this.normalizedSender,
     brandName: brandName.present ? brandName.value : this.brandName,
+    categorySource: categorySource ?? this.categorySource,
+    traiSuffix: traiSuffix.present ? traiSuffix.value : this.traiSuffix,
+    isPayment: isPayment ?? this.isPayment,
+    paymentType: paymentType ?? this.paymentType,
+    paymentDirection: paymentDirection ?? this.paymentDirection,
+    paymentSource: paymentSource ?? this.paymentSource,
+    hasOtp: hasOtp ?? this.hasOtp,
+    otpValue: otpValue.present ? otpValue.value : this.otpValue,
+    otpSource: otpSource ?? this.otpSource,
     classificationVersion: classificationVersion ?? this.classificationVersion,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
@@ -957,6 +1258,25 @@ class Message extends DataClass implements Insertable<Message> {
           ? data.normalizedSender.value
           : this.normalizedSender,
       brandName: data.brandName.present ? data.brandName.value : this.brandName,
+      categorySource: data.categorySource.present
+          ? data.categorySource.value
+          : this.categorySource,
+      traiSuffix: data.traiSuffix.present
+          ? data.traiSuffix.value
+          : this.traiSuffix,
+      isPayment: data.isPayment.present ? data.isPayment.value : this.isPayment,
+      paymentType: data.paymentType.present
+          ? data.paymentType.value
+          : this.paymentType,
+      paymentDirection: data.paymentDirection.present
+          ? data.paymentDirection.value
+          : this.paymentDirection,
+      paymentSource: data.paymentSource.present
+          ? data.paymentSource.value
+          : this.paymentSource,
+      hasOtp: data.hasOtp.present ? data.hasOtp.value : this.hasOtp,
+      otpValue: data.otpValue.present ? data.otpValue.value : this.otpValue,
+      otpSource: data.otpSource.present ? data.otpSource.value : this.otpSource,
       classificationVersion: data.classificationVersion.present
           ? data.classificationVersion.value
           : this.classificationVersion,
@@ -990,6 +1310,15 @@ class Message extends DataClass implements Insertable<Message> {
           ..write('rawSender: $rawSender, ')
           ..write('normalizedSender: $normalizedSender, ')
           ..write('brandName: $brandName, ')
+          ..write('categorySource: $categorySource, ')
+          ..write('traiSuffix: $traiSuffix, ')
+          ..write('isPayment: $isPayment, ')
+          ..write('paymentType: $paymentType, ')
+          ..write('paymentDirection: $paymentDirection, ')
+          ..write('paymentSource: $paymentSource, ')
+          ..write('hasOtp: $hasOtp, ')
+          ..write('otpValue: $otpValue, ')
+          ..write('otpSource: $otpSource, ')
           ..write('classificationVersion: $classificationVersion, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
@@ -1021,6 +1350,15 @@ class Message extends DataClass implements Insertable<Message> {
     rawSender,
     normalizedSender,
     brandName,
+    categorySource,
+    traiSuffix,
+    isPayment,
+    paymentType,
+    paymentDirection,
+    paymentSource,
+    hasOtp,
+    otpValue,
+    otpSource,
     classificationVersion,
     createdAt,
     updatedAt,
@@ -1051,6 +1389,15 @@ class Message extends DataClass implements Insertable<Message> {
           other.rawSender == this.rawSender &&
           other.normalizedSender == this.normalizedSender &&
           other.brandName == this.brandName &&
+          other.categorySource == this.categorySource &&
+          other.traiSuffix == this.traiSuffix &&
+          other.isPayment == this.isPayment &&
+          other.paymentType == this.paymentType &&
+          other.paymentDirection == this.paymentDirection &&
+          other.paymentSource == this.paymentSource &&
+          other.hasOtp == this.hasOtp &&
+          other.otpValue == this.otpValue &&
+          other.otpSource == this.otpSource &&
           other.classificationVersion == this.classificationVersion &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
@@ -1079,6 +1426,15 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<String?> rawSender;
   final Value<String?> normalizedSender;
   final Value<String?> brandName;
+  final Value<String> categorySource;
+  final Value<String?> traiSuffix;
+  final Value<bool> isPayment;
+  final Value<String> paymentType;
+  final Value<String> paymentDirection;
+  final Value<String> paymentSource;
+  final Value<bool> hasOtp;
+  final Value<String?> otpValue;
+  final Value<String> otpSource;
   final Value<int> classificationVersion;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
@@ -1106,6 +1462,15 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.rawSender = const Value.absent(),
     this.normalizedSender = const Value.absent(),
     this.brandName = const Value.absent(),
+    this.categorySource = const Value.absent(),
+    this.traiSuffix = const Value.absent(),
+    this.isPayment = const Value.absent(),
+    this.paymentType = const Value.absent(),
+    this.paymentDirection = const Value.absent(),
+    this.paymentSource = const Value.absent(),
+    this.hasOtp = const Value.absent(),
+    this.otpValue = const Value.absent(),
+    this.otpSource = const Value.absent(),
     this.classificationVersion = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -1134,6 +1499,15 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     this.rawSender = const Value.absent(),
     this.normalizedSender = const Value.absent(),
     this.brandName = const Value.absent(),
+    this.categorySource = const Value.absent(),
+    this.traiSuffix = const Value.absent(),
+    this.isPayment = const Value.absent(),
+    this.paymentType = const Value.absent(),
+    this.paymentDirection = const Value.absent(),
+    this.paymentSource = const Value.absent(),
+    this.hasOtp = const Value.absent(),
+    this.otpValue = const Value.absent(),
+    this.otpSource = const Value.absent(),
     this.classificationVersion = const Value.absent(),
     required DateTime createdAt,
     required DateTime updatedAt,
@@ -1170,6 +1544,15 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Expression<String>? rawSender,
     Expression<String>? normalizedSender,
     Expression<String>? brandName,
+    Expression<String>? categorySource,
+    Expression<String>? traiSuffix,
+    Expression<bool>? isPayment,
+    Expression<String>? paymentType,
+    Expression<String>? paymentDirection,
+    Expression<String>? paymentSource,
+    Expression<bool>? hasOtp,
+    Expression<String>? otpValue,
+    Expression<String>? otpSource,
     Expression<int>? classificationVersion,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
@@ -1200,6 +1583,15 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       if (rawSender != null) 'raw_sender': rawSender,
       if (normalizedSender != null) 'normalized_sender': normalizedSender,
       if (brandName != null) 'brand_name': brandName,
+      if (categorySource != null) 'category_source': categorySource,
+      if (traiSuffix != null) 'trai_suffix': traiSuffix,
+      if (isPayment != null) 'is_payment': isPayment,
+      if (paymentType != null) 'payment_type': paymentType,
+      if (paymentDirection != null) 'payment_direction': paymentDirection,
+      if (paymentSource != null) 'payment_source': paymentSource,
+      if (hasOtp != null) 'has_otp': hasOtp,
+      if (otpValue != null) 'otp_value': otpValue,
+      if (otpSource != null) 'otp_source': otpSource,
       if (classificationVersion != null)
         'classification_version': classificationVersion,
       if (createdAt != null) 'created_at': createdAt,
@@ -1231,6 +1623,15 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Value<String?>? rawSender,
     Value<String?>? normalizedSender,
     Value<String?>? brandName,
+    Value<String>? categorySource,
+    Value<String?>? traiSuffix,
+    Value<bool>? isPayment,
+    Value<String>? paymentType,
+    Value<String>? paymentDirection,
+    Value<String>? paymentSource,
+    Value<bool>? hasOtp,
+    Value<String?>? otpValue,
+    Value<String>? otpSource,
     Value<int>? classificationVersion,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
@@ -1260,6 +1661,15 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       rawSender: rawSender ?? this.rawSender,
       normalizedSender: normalizedSender ?? this.normalizedSender,
       brandName: brandName ?? this.brandName,
+      categorySource: categorySource ?? this.categorySource,
+      traiSuffix: traiSuffix ?? this.traiSuffix,
+      isPayment: isPayment ?? this.isPayment,
+      paymentType: paymentType ?? this.paymentType,
+      paymentDirection: paymentDirection ?? this.paymentDirection,
+      paymentSource: paymentSource ?? this.paymentSource,
+      hasOtp: hasOtp ?? this.hasOtp,
+      otpValue: otpValue ?? this.otpValue,
+      otpSource: otpSource ?? this.otpSource,
       classificationVersion:
           classificationVersion ?? this.classificationVersion,
       createdAt: createdAt ?? this.createdAt,
@@ -1341,6 +1751,33 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     if (brandName.present) {
       map['brand_name'] = Variable<String>(brandName.value);
     }
+    if (categorySource.present) {
+      map['category_source'] = Variable<String>(categorySource.value);
+    }
+    if (traiSuffix.present) {
+      map['trai_suffix'] = Variable<String>(traiSuffix.value);
+    }
+    if (isPayment.present) {
+      map['is_payment'] = Variable<bool>(isPayment.value);
+    }
+    if (paymentType.present) {
+      map['payment_type'] = Variable<String>(paymentType.value);
+    }
+    if (paymentDirection.present) {
+      map['payment_direction'] = Variable<String>(paymentDirection.value);
+    }
+    if (paymentSource.present) {
+      map['payment_source'] = Variable<String>(paymentSource.value);
+    }
+    if (hasOtp.present) {
+      map['has_otp'] = Variable<bool>(hasOtp.value);
+    }
+    if (otpValue.present) {
+      map['otp_value'] = Variable<String>(otpValue.value);
+    }
+    if (otpSource.present) {
+      map['otp_source'] = Variable<String>(otpSource.value);
+    }
     if (classificationVersion.present) {
       map['classification_version'] = Variable<int>(
         classificationVersion.value,
@@ -1383,6 +1820,15 @@ class MessagesCompanion extends UpdateCompanion<Message> {
           ..write('rawSender: $rawSender, ')
           ..write('normalizedSender: $normalizedSender, ')
           ..write('brandName: $brandName, ')
+          ..write('categorySource: $categorySource, ')
+          ..write('traiSuffix: $traiSuffix, ')
+          ..write('isPayment: $isPayment, ')
+          ..write('paymentType: $paymentType, ')
+          ..write('paymentDirection: $paymentDirection, ')
+          ..write('paymentSource: $paymentSource, ')
+          ..write('hasOtp: $hasOtp, ')
+          ..write('otpValue: $otpValue, ')
+          ..write('otpSource: $otpSource, ')
           ..write('classificationVersion: $classificationVersion, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
@@ -2556,6 +3002,15 @@ typedef $$MessagesTableCreateCompanionBuilder =
       Value<String?> rawSender,
       Value<String?> normalizedSender,
       Value<String?> brandName,
+      Value<String> categorySource,
+      Value<String?> traiSuffix,
+      Value<bool> isPayment,
+      Value<String> paymentType,
+      Value<String> paymentDirection,
+      Value<String> paymentSource,
+      Value<bool> hasOtp,
+      Value<String?> otpValue,
+      Value<String> otpSource,
       Value<int> classificationVersion,
       required DateTime createdAt,
       required DateTime updatedAt,
@@ -2585,6 +3040,15 @@ typedef $$MessagesTableUpdateCompanionBuilder =
       Value<String?> rawSender,
       Value<String?> normalizedSender,
       Value<String?> brandName,
+      Value<String> categorySource,
+      Value<String?> traiSuffix,
+      Value<bool> isPayment,
+      Value<String> paymentType,
+      Value<String> paymentDirection,
+      Value<String> paymentSource,
+      Value<bool> hasOtp,
+      Value<String?> otpValue,
+      Value<String> otpSource,
       Value<int> classificationVersion,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
@@ -2730,6 +3194,51 @@ class $$MessagesTableFilterComposer
 
   ColumnFilters<String> get brandName => $composableBuilder(
     column: $table.brandName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get categorySource => $composableBuilder(
+    column: $table.categorySource,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get traiSuffix => $composableBuilder(
+    column: $table.traiSuffix,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isPayment => $composableBuilder(
+    column: $table.isPayment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get paymentType => $composableBuilder(
+    column: $table.paymentType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get paymentDirection => $composableBuilder(
+    column: $table.paymentDirection,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get paymentSource => $composableBuilder(
+    column: $table.paymentSource,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get hasOtp => $composableBuilder(
+    column: $table.hasOtp,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get otpValue => $composableBuilder(
+    column: $table.otpValue,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get otpSource => $composableBuilder(
+    column: $table.otpSource,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2893,6 +3402,51 @@ class $$MessagesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get categorySource => $composableBuilder(
+    column: $table.categorySource,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get traiSuffix => $composableBuilder(
+    column: $table.traiSuffix,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isPayment => $composableBuilder(
+    column: $table.isPayment,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get paymentType => $composableBuilder(
+    column: $table.paymentType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get paymentDirection => $composableBuilder(
+    column: $table.paymentDirection,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get paymentSource => $composableBuilder(
+    column: $table.paymentSource,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get hasOtp => $composableBuilder(
+    column: $table.hasOtp,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get otpValue => $composableBuilder(
+    column: $table.otpValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get otpSource => $composableBuilder(
+    column: $table.otpSource,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get classificationVersion => $composableBuilder(
     column: $table.classificationVersion,
     builder: (column) => ColumnOrderings(column),
@@ -3000,6 +3554,43 @@ class $$MessagesTableAnnotationComposer
   GeneratedColumn<String> get brandName =>
       $composableBuilder(column: $table.brandName, builder: (column) => column);
 
+  GeneratedColumn<String> get categorySource => $composableBuilder(
+    column: $table.categorySource,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get traiSuffix => $composableBuilder(
+    column: $table.traiSuffix,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isPayment =>
+      $composableBuilder(column: $table.isPayment, builder: (column) => column);
+
+  GeneratedColumn<String> get paymentType => $composableBuilder(
+    column: $table.paymentType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get paymentDirection => $composableBuilder(
+    column: $table.paymentDirection,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get paymentSource => $composableBuilder(
+    column: $table.paymentSource,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get hasOtp =>
+      $composableBuilder(column: $table.hasOtp, builder: (column) => column);
+
+  GeneratedColumn<String> get otpValue =>
+      $composableBuilder(column: $table.otpValue, builder: (column) => column);
+
+  GeneratedColumn<String> get otpSource =>
+      $composableBuilder(column: $table.otpSource, builder: (column) => column);
+
   GeneratedColumn<int> get classificationVersion => $composableBuilder(
     column: $table.classificationVersion,
     builder: (column) => column,
@@ -3087,6 +3678,15 @@ class $$MessagesTableTableManager
                 Value<String?> rawSender = const Value.absent(),
                 Value<String?> normalizedSender = const Value.absent(),
                 Value<String?> brandName = const Value.absent(),
+                Value<String> categorySource = const Value.absent(),
+                Value<String?> traiSuffix = const Value.absent(),
+                Value<bool> isPayment = const Value.absent(),
+                Value<String> paymentType = const Value.absent(),
+                Value<String> paymentDirection = const Value.absent(),
+                Value<String> paymentSource = const Value.absent(),
+                Value<bool> hasOtp = const Value.absent(),
+                Value<String?> otpValue = const Value.absent(),
+                Value<String> otpSource = const Value.absent(),
                 Value<int> classificationVersion = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
@@ -3114,6 +3714,15 @@ class $$MessagesTableTableManager
                 rawSender: rawSender,
                 normalizedSender: normalizedSender,
                 brandName: brandName,
+                categorySource: categorySource,
+                traiSuffix: traiSuffix,
+                isPayment: isPayment,
+                paymentType: paymentType,
+                paymentDirection: paymentDirection,
+                paymentSource: paymentSource,
+                hasOtp: hasOtp,
+                otpValue: otpValue,
+                otpSource: otpSource,
                 classificationVersion: classificationVersion,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
@@ -3143,6 +3752,15 @@ class $$MessagesTableTableManager
                 Value<String?> rawSender = const Value.absent(),
                 Value<String?> normalizedSender = const Value.absent(),
                 Value<String?> brandName = const Value.absent(),
+                Value<String> categorySource = const Value.absent(),
+                Value<String?> traiSuffix = const Value.absent(),
+                Value<bool> isPayment = const Value.absent(),
+                Value<String> paymentType = const Value.absent(),
+                Value<String> paymentDirection = const Value.absent(),
+                Value<String> paymentSource = const Value.absent(),
+                Value<bool> hasOtp = const Value.absent(),
+                Value<String?> otpValue = const Value.absent(),
+                Value<String> otpSource = const Value.absent(),
                 Value<int> classificationVersion = const Value.absent(),
                 required DateTime createdAt,
                 required DateTime updatedAt,
@@ -3170,6 +3788,15 @@ class $$MessagesTableTableManager
                 rawSender: rawSender,
                 normalizedSender: normalizedSender,
                 brandName: brandName,
+                categorySource: categorySource,
+                traiSuffix: traiSuffix,
+                isPayment: isPayment,
+                paymentType: paymentType,
+                paymentDirection: paymentDirection,
+                paymentSource: paymentSource,
+                hasOtp: hasOtp,
+                otpValue: otpValue,
+                otpSource: otpSource,
                 classificationVersion: classificationVersion,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
@@ -3178,7 +3805,7 @@ class $$MessagesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable(table),
+                  e.readTable<$MessagesTable, Message>(table),
                   $$MessagesTableReferences(db, table, e),
                 ),
               )
@@ -3500,8 +4127,10 @@ class $$LabelsTableTableManager
               ),
           withReferenceMapper: (p0) => p0
               .map(
-                (e) =>
-                    (e.readTable(table), $$LabelsTableReferences(db, table, e)),
+                (e) => (
+                  e.readTable<$LabelsTable, Label>(table),
+                  $$LabelsTableReferences(db, table, e),
+                ),
               )
               .toList(),
           prefetchHooksCallback: ({messageLabelsRefs = false}) {
@@ -3826,7 +4455,7 @@ class $$MessageLabelsTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable(table),
+                  e.readTable<$MessageLabelsTable, MessageLabel>(table),
                   $$MessageLabelsTableReferences(db, table, e),
                 ),
               )
@@ -4133,7 +4762,19 @@ class $$SenderMetadataTableTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<
+                    $SenderMetadataTableTable,
+                    SenderMetadataTableData
+                  >(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $SenderMetadataTableTable,
+                    SenderMetadataTableData
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
         ),

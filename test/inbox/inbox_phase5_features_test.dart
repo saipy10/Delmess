@@ -1,12 +1,9 @@
 import 'package:delmess/core/constants/category_constants.dart';
 import 'package:delmess/core/database/app_database.dart';
 import 'package:delmess/core/database/database_providers.dart';
-import 'package:delmess/core/selection/selection_controller.dart';
 import 'package:delmess/features/inbox/domain/sms_conversation.dart';
 import 'package:delmess/features/inbox/presentation/widgets/conversation_tile.dart';
-import 'package:delmess/features/labels/data/label_repository.dart';
 import 'package:delmess/features/messages/data/message_repository.dart';
-import 'package:delmess/features/messages/data/sender_metadata_repository.dart';
 import 'package:delmess/features/messages/domain/sms_message.dart';
 import 'package:drift/native.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +13,10 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   late AppDatabase db;
   late MessageRepository messageRepo;
-  late LabelRepository labelRepo;
-  late SenderMetadataRepository senderRepo;
 
   setUp(() {
     db = AppDatabase(NativeDatabase.memory());
     messageRepo = DriftMessageRepository(db);
-    labelRepo = DriftLabelRepository(db);
-    senderRepo = DriftSenderMetadataRepository(db);
   });
 
   tearDown(() async {

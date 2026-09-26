@@ -14,7 +14,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? e]) : super(e ?? _openConnection());
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -36,6 +36,17 @@ class AppDatabase extends _$AppDatabase {
         await m.addColumn(messages, messages.rawSender);
         await m.addColumn(messages, messages.normalizedSender);
         await m.addColumn(messages, messages.brandName);
+      }
+      if (from < 4) {
+        await m.addColumn(messages, messages.categorySource);
+        await m.addColumn(messages, messages.traiSuffix);
+        await m.addColumn(messages, messages.isPayment);
+        await m.addColumn(messages, messages.paymentType);
+        await m.addColumn(messages, messages.paymentDirection);
+        await m.addColumn(messages, messages.paymentSource);
+        await m.addColumn(messages, messages.hasOtp);
+        await m.addColumn(messages, messages.otpValue);
+        await m.addColumn(messages, messages.otpSource);
       }
     },
   );

@@ -1,6 +1,9 @@
 import 'package:delmess/core/constants/category_constants.dart';
 import 'package:delmess/features/classification/domain/classification_result.dart';
+import 'package:delmess/features/classification/domain/otp_result.dart';
 import 'package:delmess/features/classification/domain/parsed_header.dart';
+import 'package:delmess/features/classification/domain/payment_result.dart';
+import 'package:delmess/features/classification/domain/payment_type.dart';
 import 'package:delmess/features/messages/domain/classification_reason.dart';
 
 /// Classifies messages based on official TRAI SMS header suffixes (-T, -S, -P, -G).
@@ -17,6 +20,8 @@ class HeaderSuffixClassifier {
     ParsedHeader header, {
     String? brand,
     String? detectedOtp,
+    PaymentResult payment = const PaymentResult.none(),
+    OtpResult? otp,
   }) {
     if (header.suffix == null) return null;
 
@@ -40,14 +45,27 @@ class HeaderSuffixClassifier {
 
     if (category == null) return null;
 
+    final resolvedOtp =
+        otp ??
+        (detectedOtp != null
+            ? OtpResult(
+                hasOtp: true,
+                otpValue: detectedOtp,
+                source: OtpSource.otpPattern,
+              )
+            : const OtpResult.none());
+
     return ClassificationResult(
       category: category,
+      categorySource: CategorySource.traiSuffix,
+      traiSuffix: header.suffix,
       confidence: 1.0,
       reason: ClassificationReason.officialSuffix,
       reasonDescription: 'Explicit -${header.suffix} commercial SMS suffix',
       parsedHeader: header,
       brand: brand,
-      detectedOtp: detectedOtp,
+      payment: payment,
+      otp: resolvedOtp,
     );
   }
 }
