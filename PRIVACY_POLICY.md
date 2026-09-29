@@ -29,7 +29,7 @@ DelMess ("we", "our", or "the App") is committed to absolute user privacy, local
   - **Promotional**: Marketing offers, discount codes, and sales campaigns.
   - **Government**: Official notifications, Aadhaar updates, and civic advisories.
   - **Other / Spam**: Unclassified or unwanted messages.
-* **TRAI Header Decoding**: It decodes Telecom Regulatory Authority of India (TRAI) commercial alphanumeric headers (such as `AX-HDFCBK`, `AD-SWIGGY-T`, `VM-AMAZON`) to display recognizable brand identities.
+* **TRAI Header Processing**: It analyzes Telecom Regulatory Authority of India (TRAI) commercial alphanumeric headers (such as `AX-HDFCBK`, `AD-SWIGGY-T`, `VM-AMAZON`) to determine regulatory purpose suffixes (-T, -S, -P, -G) directly while preserving authentic sender headers.
 * **Local Heuristics**: All parsing, pattern matching, keyword analysis, and rule heuristics are executed locally via client-side Dart algorithms and SQLite queries without calling external APIs or machine learning cloud endpoints.
 
 ---

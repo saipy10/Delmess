@@ -60,10 +60,11 @@ class ClassificationEngine {
     // 3. Independent OTP Detector: Bounded scan with false-positive safeguards
     final otp = otpClassifier.classify(body);
 
-    // 4. Independent Brand Resolution (does not override category)
+    // 4. Headers are preserved directly without mapping to arbitrary names
     final meta = await knownHeaderClassifier.lookupMetadata(parsed.cleanHeader);
     final brandInfo = await brandResolver.resolve(parsed.cleanHeader);
-    final brand = meta?.brand ?? brandInfo?.brandName;
+    final rawBrand = meta?.brand ?? brandInfo?.brandName;
+    final brand = (rawBrand != null && rawBrand.isNotEmpty) ? rawBrand : null;
 
     // 5. Determine Primary Category
     // Priority 1: Official Suffix (-T, -S, -P, -G) [Highest Authority]
@@ -94,7 +95,7 @@ class ClassificationEngine {
         categorySource: CategorySource.knownHeader,
         confidence: 0.90,
         reason: ClassificationReason.knownHeader,
-        reasonDescription: 'Recognized brand header ($brand)',
+        reasonDescription: 'Recognized header (${parsed.cleanHeader})',
         parsedHeader: parsed,
         brand: brand,
         payment: payment,
@@ -133,7 +134,8 @@ class ClassificationEngine {
     final otp = otpClassifier.classify(body);
     final meta = knownHeaderClassifier.lookupCached(parsed.cleanHeader);
     final brandInfo = brandResolver.resolveSync(parsed.cleanHeader);
-    final brand = meta?.brand ?? brandInfo?.brandName;
+    final rawBrand = meta?.brand ?? brandInfo?.brandName;
+    final brand = (rawBrand != null && rawBrand.isNotEmpty) ? rawBrand : null;
 
     final suffixResult = suffixClassifier.classify(
       parsed,
@@ -161,7 +163,7 @@ class ClassificationEngine {
         categorySource: CategorySource.knownHeader,
         confidence: 0.90,
         reason: ClassificationReason.knownHeader,
-        reasonDescription: 'Recognized brand header ($brand)',
+        reasonDescription: 'Recognized header (${parsed.cleanHeader})',
         parsedHeader: parsed,
         brand: brand,
         payment: payment,

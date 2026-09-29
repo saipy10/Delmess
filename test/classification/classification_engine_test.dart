@@ -18,7 +18,7 @@ void main() {
       SenderMetadata(
         id: '1',
         header: 'HDFCBK',
-        brand: 'HDFC Bank',
+        brand: '',
         organization: 'HDFC Bank Ltd.',
         industry: 'Banking & Financial Services',
         updatedAt: now,
@@ -28,7 +28,7 @@ void main() {
       SenderMetadata(
         id: '2',
         header: 'AMAZON',
-        brand: 'Amazon India',
+        brand: '',
         organization: 'Amazon',
         industry: 'E-Commerce',
         updatedAt: now,
@@ -38,7 +38,7 @@ void main() {
       SenderMetadata(
         id: '3',
         header: 'SWIGGY',
-        brand: 'Swiggy',
+        brand: '',
         organization: 'Bundl',
         industry: 'Food & Delivery',
         updatedAt: now,
@@ -48,7 +48,7 @@ void main() {
       SenderMetadata(
         id: '4',
         header: 'GOVTIN',
-        brand: 'Govt of India',
+        brand: '',
         organization: 'National Informatics Centre',
         industry: 'Government Services',
         updatedAt: now,
@@ -60,7 +60,7 @@ void main() {
 
   group('Official TRAI Suffix Classification Tests', () {
     test(
-      'AX-HDFCBN-P classifies as Promotional with officialSuffix reason and resolves HDFC Bank',
+      'AX-HDFCBN-P classifies as Promotional with officialSuffix reason',
       () async {
         final res = await engine.classify(
           sender: 'AX-HDFCBN-P',
@@ -69,7 +69,7 @@ void main() {
         expect(res.category, CategoryType.promotional);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -83,7 +83,7 @@ void main() {
         expect(res.category, CategoryType.promotional);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -97,7 +97,7 @@ void main() {
         expect(res.category, CategoryType.transactional);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -111,7 +111,7 @@ void main() {
         expect(res.category, CategoryType.service);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -125,7 +125,7 @@ void main() {
         expect(res.category, CategoryType.government);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -137,7 +137,7 @@ void main() {
       expect(res.category, CategoryType.promotional);
       expect(res.confidence, 1.0);
       expect(res.reason, ClassificationReason.officialSuffix);
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('handles whitespace around sender: "  AX-HDFCBN-P  " -> Promotional', () async {
@@ -148,7 +148,7 @@ void main() {
       expect(res.category, CategoryType.promotional);
       expect(res.confidence, 1.0);
       expect(res.reason, ClassificationReason.officialSuffix);
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test(
@@ -161,7 +161,7 @@ void main() {
         expect(res.category, CategoryType.transactional);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -175,7 +175,7 @@ void main() {
         expect(res.category, CategoryType.promotional);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'Amazon India');
+        expect(res.brand, isNull);
       },
     );
 
@@ -189,7 +189,7 @@ void main() {
         expect(res.category, CategoryType.service);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'Swiggy');
+        expect(res.brand, isNull);
       },
     );
 
@@ -219,7 +219,7 @@ void main() {
         expect(res.category, CategoryType.promotional);
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -261,7 +261,7 @@ void main() {
         expect(res.category, CategoryType.transactional);
         expect(res.confidence, 0.90);
         expect(res.reason, ClassificationReason.knownHeader);
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -275,7 +275,7 @@ void main() {
         expect(res.category, CategoryType.government);
         expect(res.confidence, 0.90);
         expect(res.reason, ClassificationReason.knownHeader);
-        expect(res.brand, 'Govt of India');
+        expect(res.brand, isNull);
       },
     );
 
@@ -289,7 +289,7 @@ void main() {
         expect(res.category, CategoryType.service);
         expect(res.confidence, 0.90);
         expect(res.reason, ClassificationReason.knownHeader);
-        expect(res.brand, 'Swiggy');
+        expect(res.brand, isNull);
       },
     );
   });

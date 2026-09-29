@@ -43,104 +43,104 @@ class DatabaseSeedService {
       SenderMetadata(
         id: 'meta_hdfc_bn',
         header: 'HDFCBN',
-        brand: 'HDFC Bank',
-        organization: 'HDFC Bank Ltd.',
+        brand: '',
+        organization: '',
         industry: 'Banking & Financial Services',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_hdfc',
         header: 'HDFCBK',
-        brand: 'HDFC Bank',
-        organization: 'HDFC Bank Ltd.',
+        brand: '',
+        organization: '',
         industry: 'Banking & Financial Services',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_sbi',
         header: 'SBIINB',
-        brand: 'SBI Bank',
-        organization: 'State Bank of India',
+        brand: '',
+        organization: '',
         industry: 'Banking',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_amazon',
         header: 'AMAZON',
-        brand: 'Amazon India',
-        organization: 'Amazon Wholesale India Pvt Ltd',
+        brand: '',
+        organization: '',
         industry: 'E-Commerce',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_swiggy',
         header: 'SWIGGY',
-        brand: 'Swiggy',
-        organization: 'Bundl Technologies Pvt Ltd',
+        brand: '',
+        organization: '',
         industry: 'Food & Delivery',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_zomato',
         header: 'ZOMATO',
-        brand: 'Zomato',
-        organization: 'Zomato Ltd',
+        brand: '',
+        organization: '',
         industry: 'Food & Delivery',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_govt',
         header: 'GOVTIN',
-        brand: 'Govt of India',
-        organization: 'Ministry of Electronics and IT',
+        brand: '',
+        organization: '',
         industry: 'Government Services',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_flipkart',
         header: 'FLPKRT',
-        brand: 'Flipkart',
-        organization: 'Flipkart Internet Pvt Ltd',
+        brand: '',
+        organization: '',
         industry: 'E-Commerce',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_amzin',
         header: 'AMZIN',
-        brand: 'Amazon India',
-        organization: 'Amazon Wholesale India Pvt Ltd',
+        brand: '',
+        organization: '',
         industry: 'E-Commerce',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_domino',
         header: 'DOMINO',
-        brand: "Domino's Pizza",
-        organization: 'Jubilant FoodWorks Ltd',
+        brand: '',
+        organization: '',
         industry: 'Food & Delivery',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_actfib',
         header: 'ACTFIB',
-        brand: 'ACT Fibernet',
-        organization: 'Atria Convergence Technologies',
+        brand: '',
+        organization: '',
         industry: 'Utilities & Internet',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_uidai',
         header: 'UIDAI',
-        brand: 'UIDAI Aadhaar',
-        organization: 'Unique Identification Authority of India',
+        brand: '',
+        organization: '',
         industry: 'Government Services',
         updatedAt: now,
       ),
       SenderMetadata(
         id: 'meta_income',
         header: 'INCOME',
-        brand: 'Income Tax Department',
-        organization: 'Ministry of Finance, Govt of India',
+        brand: '',
+        organization: '',
         industry: 'Government Services',
         updatedAt: now,
       ),
@@ -176,13 +176,12 @@ class DatabaseSeedService {
 
     // 3. Seed Realistic Sample Messages
     final sampleMessages = [
-      // Thread 1: HDFC Bank (Transactional with OTP, Pinned, Unread)
+      // Thread 1: HDFCBK (Transactional with OTP, Pinned, Unread)
       SmsMessage(
         id: 'msg_hdfc_1',
         threadId: 'thread_hdfc',
         sender: 'AD-HDFCBK-T',
         header: 'HDFCBK',
-        brand: 'HDFC Bank',
         body:
             'Your OTP for transaction of INR 4,999.00 at AMAZON INDIA is 482921. Valid for 10 minutes. Do not share with anyone.',
         receivedAt: now.subtract(const Duration(minutes: 5)),
@@ -202,7 +201,6 @@ class DatabaseSeedService {
         threadId: 'thread_hdfc',
         sender: 'AD-HDFCBK-T',
         header: 'HDFCBK',
-        brand: 'HDFC Bank',
         body:
             'A/C XX4921 debited for INR 4,999.00 on 01-Sep-26 via UPI Ref 623910839210. Avail Bal: INR 84,210.50. If not done by you, call 18002583838.',
         receivedAt: now.subtract(const Duration(minutes: 3)),
@@ -217,13 +215,12 @@ class DatabaseSeedService {
         updatedAt: now.subtract(const Duration(minutes: 3)),
       ),
 
-      // Thread 2: Swiggy (Service delivery notification)
+      // Thread 2: SWIGGY (Service delivery notification)
       SmsMessage(
         id: 'msg_swiggy_1',
         threadId: 'thread_swiggy',
         sender: 'JD-SWIGGY-S',
         header: 'SWIGGY',
-        brand: 'Swiggy',
         body:
             'Your Biryani Blues order #SWG98210 is on the way! Delivery partner Rajesh is arriving in 12 mins. Track live in app.',
         receivedAt: now.subtract(const Duration(minutes: 25)),
@@ -238,13 +235,12 @@ class DatabaseSeedService {
         updatedAt: now.subtract(const Duration(minutes: 25)),
       ),
 
-      // Thread 3: Amazon Sale (Promotional)
+      // Thread 3: AMAZON (Promotional)
       SmsMessage(
         id: 'msg_amazon_1',
         threadId: 'thread_amazon',
         sender: 'VM-AMAZON-P',
         header: 'AMAZON',
-        brand: 'Amazon India',
         body:
             'Great Indian Festival starts midnight! Up to 70% off on Smartphones, Laptops & Home Appliances. Early Prime access active: amzn.in/deals',
         receivedAt: now.subtract(const Duration(hours: 2)),
@@ -265,7 +261,6 @@ class DatabaseSeedService {
         threadId: 'thread_govt',
         sender: 'XX-GOVTIN-G',
         header: 'GOVTIN',
-        brand: 'Govt of India',
         body:
             'DigiLocker: Your Driving License record has been successfully verified and issued by MoRTH. View anytime in DigiLocker app.',
         receivedAt: now.subtract(const Duration(hours: 6)),
@@ -280,13 +275,12 @@ class DatabaseSeedService {
         updatedAt: now.subtract(const Duration(hours: 6)),
       ),
 
-      // Thread 5: SBI Bank (Salary Credit)
+      // Thread 5: SBIINB (Salary Credit)
       SmsMessage(
         id: 'msg_sbi_1',
         threadId: 'thread_sbi',
         sender: 'AD-SBIINB-T',
         header: 'SBIINB',
-        brand: 'SBI Bank',
         body:
             'Dear Customer, your Account ending 8912 has been credited with INR 95,000.00 towards MONTHLY SALARY on 01-Sep-26. Total Bal: INR 1,42,800.00.',
         receivedAt: now.subtract(const Duration(hours: 12)),
@@ -301,13 +295,12 @@ class DatabaseSeedService {
         updatedAt: now.subtract(const Duration(hours: 12)),
       ),
 
-      // Thread 6: Zomato (Promotional coupon)
+      // Thread 6: ZOMATO (Promotional coupon)
       SmsMessage(
         id: 'msg_zomato_1',
         threadId: 'thread_zomato',
         sender: 'BZ-ZOMATO-P',
         header: 'ZOMATO',
-        brand: 'Zomato',
         body:
             'Craving Pizza? Use promo code CRAVINGS to get Flat 50% OFF + free delivery on top rated pizzerias near you. Order now!',
         receivedAt: now.subtract(const Duration(days: 1)),
@@ -322,13 +315,12 @@ class DatabaseSeedService {
         updatedAt: now.subtract(const Duration(days: 1)),
       ),
 
-      // Thread 7: Flipkart (Delivery tracking)
+      // Thread 7: FLPKRT (Delivery tracking)
       SmsMessage(
         id: 'msg_flipkart_1',
         threadId: 'thread_flipkart',
         sender: 'VK-FLPKRT-S',
         header: 'FLPKRT',
-        brand: 'Flipkart',
         body:
             'Out for Delivery: Your Flipkart package containing Sony Headphones is out with delivery agent Vikram (PIN: 9102).',
         receivedAt: now.subtract(const Duration(days: 1, hours: 4)),
@@ -350,7 +342,6 @@ class DatabaseSeedService {
         threadId: 'thread_personal',
         sender: '+919876543210',
         header: '9876543210',
-        brand: '+91 98765 43210',
         body: 'Hey! Are you free this weekend for catching up over coffee?',
         receivedAt: now.subtract(const Duration(days: 2)),
         category: CategoryType.other,
@@ -369,7 +360,6 @@ class DatabaseSeedService {
         threadId: 'thread_archived',
         sender: 'VK-AIRTEL-S',
         header: 'AIRTEL',
-        brand: 'Airtel',
         body:
             'Your Fiber bill for Aug 2026 of INR 1,178 is generated. Auto-debit scheduled on 05-Sep. View bill in Thanks App.',
         receivedAt: now.subtract(const Duration(days: 5)),
@@ -390,7 +380,6 @@ class DatabaseSeedService {
         threadId: 'thread_deleted',
         sender: 'XY-SPAM-P',
         header: 'SPAM',
-        brand: 'Loan Offer',
         body:
             'Pre-approved instant personal loan of up to 10 Lakhs with 0 processing fee. Apply today: loan.link/apply',
         receivedAt: now.subtract(const Duration(days: 7)),

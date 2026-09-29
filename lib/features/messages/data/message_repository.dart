@@ -698,7 +698,7 @@ class DriftMessageRepository implements MessageRepository {
 
       final category = CategoryTypeExtension.fromString(latestRow.category);
       final senderDisplayName =
-          latestRow.brandName ?? latestRow.brand ?? latestRow.sender;
+          latestRow.header.isNotEmpty ? latestRow.header : latestRow.sender;
 
       final allLabels = <LabelModel>{};
       for (final msg in domainMessages) {

@@ -66,12 +66,12 @@ void main() {
       await tester.pumpAndSettle();
 
       // Verify messages appear on screen
-      expect(find.text('HDFC Bank'), findsOneWidget);
-      expect(find.text('Swiggy'), findsOneWidget);
+      expect(find.text('HDFCBK'), findsOneWidget);
+      expect(find.text('SWIGGY'), findsOneWidget);
       expect(find.text('DelMess'), findsOneWidget);
 
-      // Long press on HDFC Bank tile to enter selection mode
-      await tester.longPress(find.text('HDFC Bank'));
+      // Long press on HDFCBK tile to enter selection mode
+      await tester.longPress(find.text('HDFCBK'));
       await tester.pumpAndSettle();
 
       // Verify Selection App Bar appeared
@@ -79,8 +79,8 @@ void main() {
       expect(find.byIcon(Icons.close), findsOneWidget);
       expect(find.byIcon(Icons.check), findsOneWidget);
 
-      // Tap on Swiggy tile to select it in selection mode
-      await tester.tap(find.text('Swiggy'));
+      // Tap on SWIGGY tile to select it in selection mode
+      await tester.tap(find.text('SWIGGY'));
       await tester.pumpAndSettle();
 
       expect(find.text('2 selected'), findsOneWidget);

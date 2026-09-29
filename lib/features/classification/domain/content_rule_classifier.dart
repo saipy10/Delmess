@@ -27,7 +27,7 @@ class ContentRuleClassifier {
 
   // Service patterns (Delivery, logistics, bookings, appointments, accounts, Regional)
   static final RegExp _serviceRegex = RegExp(
-    r'(?:\b(?:delivered|out\s+for\s+delivery|shipment|dispatched|in\s*transit|track\s+(?:your\s+)?order|order\s+(?:id|number|status|confirmed|placed)|appointment\s+(?:confirmed|scheduled|reminder)|booking\s+(?:confirmed|id)|service\s+request|flight\s+ticket|pnr\s+no|ride\s+arriving|cab\s+booked)\b|वितरित|डिलिव्हरी|डिलीवरी|वितरणासाठी|ऑर्डर|டெலிவரி|డెలివరీ)',
+    r'(?:\b(?:delivered|picked\s+up|out\s+for\s+delivery|shipment|dispatched|in\s*transit|track\s+(?:your\s+)?order|order\s+(?:id|number|status|confirmed|placed)|food\s+order|appointment\s+(?:confirmed|scheduled|reminder)|booking\s+(?:confirmed|id)|service\s+request|flight\s+ticket|pnr\s+no|ride\s+arriving|cab\s+booked)\b|वितरित|डिलिव्हरी|डिलीवरी|वितरणासाठी|ऑर्डर|டெலிவரி|డెలివరీ)',
     caseSensitive: false,
   );
 

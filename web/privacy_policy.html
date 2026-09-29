@@ -207,7 +207,7 @@
       <li><strong>Government:</strong> Official government alerts, Aadhaar/DigiLocker notifications, and public advisories.</li>
       <li><strong>Other / Spam:</strong> Unclassified or low-priority personal and automated messages.</li>
     </ul>
-    <p>DelMess decodes commercial alphanumeric sender headers regulated by the Telecom Regulatory Authority of India (TRAI) (e.g. <code>AX-HDFCBK</code>, <code>AD-SWIGGY-T</code>, <code>VM-AMAZON</code>) to identify recognizable brand identities. All parsing, categorization heuristics, and pattern matching run client-side using local Dart code and SQLite queries.</p>
+    <p>DelMess parses commercial alphanumeric sender headers regulated by the Telecom Regulatory Authority of India (TRAI) (e.g. <code>AX-HDFCBK</code>, <code>AD-SWIGGY-T</code>, <code>VM-AMAZON</code>) to identify regulatory purpose suffixes (-T, -S, -P, -G) directly while preserving authentic sender headers. All parsing, categorization heuristics, and pattern matching run client-side using local Dart code and SQLite queries.</p>
 
     <h2>3. Ephemeral OTP Intelligence — Zero Storage</h2>
     <p>DelMess extracts one-time passwords (OTPs) and verification codes dynamically in-memory when rendering message views to enable convenient one-tap clipboard copying.</p>

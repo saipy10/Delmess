@@ -214,7 +214,7 @@ void main() {
         expect(updated!.category, CategoryType.promotional);
         expect(updated.rawSender, 'AX-HDFCBN-P');
         expect(updated.header, 'HDFCBN');
-        expect(updated.brand, 'HDFC Bank');
+        expect(updated.brand, isNull);
         expect(updated.operatorPrefix, 'AX');
         expect(updated.messageTypeSuffix, 'P');
         expect(updated.classificationConfidence, 1.0);

@@ -88,8 +88,8 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      // Verify Brand and Raw Sender in App Bar
-      expect(find.text('HDFC Bank'), findsOneWidget);
+      // Verify Header and Raw Sender in App Bar
+      expect(find.text('HDFCBN'), findsOneWidget);
       expect(find.text('AD-HDFCBN-T'), findsOneWidget);
 
       // Verify Category Banner

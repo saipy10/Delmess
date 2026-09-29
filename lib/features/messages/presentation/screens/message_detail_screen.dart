@@ -893,14 +893,7 @@ class MessageDetailScreen extends ConsumerWidget {
                 const SizedBox(height: AppDimensions.space12),
                 _buildDetailRow(
                   theme,
-                  'Brand',
-                  message.brandName.isNotEmpty
-                      ? message.brandName
-                      : senderDisplayName,
-                ),
-                _buildDetailRow(
-                  theme,
-                  'Clean Header',
+                  'Sender Header',
                   message.parsedHeader ?? message.header,
                 ),
                 _buildDetailRow(
@@ -931,16 +924,6 @@ class MessageDetailScreen extends ConsumerWidget {
                       : (message.messageTypeSuffix != null
                           ? '-${message.messageTypeSuffix}'
                           : 'None'),
-                ),
-                _buildDetailRow(
-                  theme,
-                  'Operator Prefix',
-                  message.operatorPrefix ?? 'None',
-                ),
-                _buildDetailRow(
-                  theme,
-                  'Brand',
-                  message.brandName.isNotEmpty ? message.brandName : 'None',
                 ),
                 const Divider(),
                 _buildDetailRow(

@@ -104,9 +104,9 @@ class KnownHeaderClassifier {
       categorySource: CategorySource.knownHeader,
       confidence: 0.90,
       reason: ClassificationReason.knownHeader,
-      reasonDescription: 'Recognized brand header (${metadata.brand})',
+      reasonDescription: 'Recognized header (${header.cleanHeader})',
       parsedHeader: header,
-      brand: metadata.brand,
+      brand: metadata.brand.isNotEmpty ? metadata.brand : null,
       payment: payment,
       otp: resolvedOtp,
     );

@@ -74,7 +74,7 @@ class SmsCategoryResolver {
         category: brand!.defaultCategory!,
         confidence: 0.90,
         reason: ClassificationReason.knownHeader,
-        reasonDescription: 'Recognized brand header (${brand.brandName})',
+        reasonDescription: 'Recognized header (${parsedHeader.cleanHeader})',
         parsedHeader: parsedHeader,
         brand: brandName,
         detectedOtp: detectedOtp,

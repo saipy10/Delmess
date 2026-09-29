@@ -115,7 +115,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     title: 'No Matching Messages',
                     message: searchState.query.isNotEmpty
                         ? 'No SMS found matching "${searchState.query}".'
-                        : 'Try searching for a bank name, OTP, or brand.',
+                        : 'Try searching for a sender header, OTP, or message content.',
                     actionLabel:
                         (searchState.query.isNotEmpty ||
                             searchState.categoryFilter != null ||

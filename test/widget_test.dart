@@ -38,6 +38,6 @@ void main() {
     expect(find.text(AppStrings.navSettings), findsOneWidget);
 
     // Verify seeded conversations rendered
-    expect(find.text('HDFC Bank'), findsWidgets);
+    expect(find.text('HDFCBK'), findsWidgets);
   });
 }

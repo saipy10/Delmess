@@ -157,7 +157,7 @@ void main() {
       final conversation = SmsConversation(
         id: 't1',
         sender: 'AD-HDFCBK-T',
-        senderDisplayName: 'HDFC Bank',
+        senderDisplayName: 'HDFCBK',
         category: CategoryType.transactional,
         messages: [msg1, msg2],
         isPinned: true,
@@ -181,7 +181,7 @@ void main() {
       );
 
       // Verify sender display name
-      expect(find.text('HDFC Bank'), findsOneWidget);
+      expect(find.text('HDFCBK'), findsOneWidget);
 
       // Verify message count badge "2"
       expect(find.text('2'), findsOneWidget);
@@ -217,7 +217,7 @@ void main() {
       final conversation = SmsConversation(
         id: 't_read',
         sender: 'AD-SWIGGY',
-        senderDisplayName: 'Swiggy',
+        senderDisplayName: 'SWIGGY',
         category: CategoryType.service,
         messages: [msg],
       );

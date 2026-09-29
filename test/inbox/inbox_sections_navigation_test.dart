@@ -88,8 +88,8 @@ void main() {
       expect(find.text('RECENT'), findsOneWidget);
 
       // Verify both conversations are displayed
-      expect(find.text('HDFC Bank'), findsOneWidget);
-      expect(find.text('Amazon India'), findsOneWidget);
+      expect(find.text('HDFCBN'), findsOneWidget);
+      expect(find.text('AMAZON'), findsOneWidget);
 
       // Clean up test widget tree & flush timers
       await tester.pumpWidget(const SizedBox.shrink());

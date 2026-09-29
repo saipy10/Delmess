@@ -27,7 +27,7 @@ void main() {
       expect(result.paymentSource, PaymentSource.paymentPattern);
       expect(result.hasOtp, isFalse);
       expect(result.detectedOtp, isNull);
-      expect(result.brand, 'HDFC Bank');
+      expect(result.brand, isNull);
     });
 
     test('Bank OTP -> TRAI: Service, Payment: No, OTP: Yes', () async {
@@ -45,7 +45,7 @@ void main() {
       expect(result.hasOtp, isTrue);
       expect(result.detectedOtp, '482913');
       expect(result.otpSource, OtpSource.otpPattern);
-      expect(result.brand, 'HDFC Bank');
+      expect(result.brand, isNull);
     });
 
     test('UPI payment OTP -> TRAI: Service, Payment: Yes (Authorization), OTP: Yes', () async {
@@ -62,7 +62,7 @@ void main() {
       expect(result.paymentType, PaymentType.upi);
       expect(result.hasOtp, isTrue);
       expect(result.detectedOtp, '482913');
-      expect(result.brand, 'HDFC Bank');
+      expect(result.brand, isNull);
     });
 
     test('Credit-card offer -> TRAI: Promotional, Payment: No, OTP: No', () async {
@@ -77,7 +77,7 @@ void main() {
       expect(result.traiSuffix, 'P');
       expect(result.isPayment, isFalse);
       expect(result.hasOtp, isFalse);
-      expect(result.brand, 'HDFC Bank');
+      expect(result.brand, isNull);
     });
 
     test('Cashback offer -> TRAI: Promotional, Payment: No, OTP: No', () async {
@@ -92,7 +92,7 @@ void main() {
       expect(result.traiSuffix, 'P');
       expect(result.isPayment, isFalse);
       expect(result.hasOtp, isFalse);
-      expect(result.brand, 'HDFC Bank');
+      expect(result.brand, isNull);
     });
 
     test('Refund received -> TRAI: Transactional, Payment: Yes (Credit/Refund), OTP: No', () async {
@@ -124,7 +124,7 @@ void main() {
       expect(result.isPayment, isFalse);
       expect(result.hasOtp, isTrue);
       expect(result.detectedOtp, '9182');
-      expect(result.brand, 'Swiggy');
+      expect(result.brand, isNull);
     });
 
     test('Government OTP -> TRAI: Government, Payment: No, OTP: Yes', () async {
@@ -154,7 +154,7 @@ void main() {
       expect(result.traiSuffix, 'T');
       expect(result.isPayment, isFalse);
       expect(result.hasOtp, isFalse);
-      expect(result.brand, 'HDFC Bank');
+      expect(result.brand, isNull);
     });
 
     test('Electricity bill payment -> Category: Transactional, Payment: Yes, Type: Bill Payment', () async {

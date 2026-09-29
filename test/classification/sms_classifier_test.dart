@@ -26,8 +26,7 @@ void main() {
       expect(res.parsedHeader.suffix, 'P');
       expect(res.parsedHeader.rawSender, 'AX-HDFCBN-P');
       expect(res.parsedHeader.normalizedSender, 'AX-HDFCBN-P');
-      expect(res.brand, 'HDFC Bank');
-      expect(res.brandName, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('AD-HDFCBN-P -> Promotional', () async {
@@ -41,7 +40,7 @@ void main() {
       expect(res.effectiveReason, 'Explicit -P commercial SMS suffix');
       expect(res.parsedHeader.cleanHeader, 'HDFCBN');
       expect(res.parsedHeader.suffix, 'P');
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('AD-HDFCBN-T -> Transactional', () async {
@@ -55,7 +54,7 @@ void main() {
       expect(res.effectiveReason, 'Explicit -T commercial SMS suffix');
       expect(res.parsedHeader.cleanHeader, 'HDFCBN');
       expect(res.parsedHeader.suffix, 'T');
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('AD-HDFCBN-S -> Service', () async {
@@ -69,7 +68,7 @@ void main() {
       expect(res.effectiveReason, 'Explicit -S commercial SMS suffix');
       expect(res.parsedHeader.cleanHeader, 'HDFCBN');
       expect(res.parsedHeader.suffix, 'S');
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('AD-HDFCBN-G -> Government', () async {
@@ -83,7 +82,7 @@ void main() {
       expect(res.effectiveReason, 'Explicit -G commercial SMS suffix');
       expect(res.parsedHeader.cleanHeader, 'HDFCBN');
       expect(res.parsedHeader.suffix, 'G');
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
   });
 
@@ -100,7 +99,7 @@ void main() {
         expect(res.confidence, 1.0);
         expect(res.reason, ClassificationReason.officialSuffix);
         expect(res.effectiveReason, 'Explicit -P commercial SMS suffix');
-        expect(res.brand, 'HDFC Bank');
+        expect(res.brand, isNull);
       },
     );
 
@@ -143,7 +142,7 @@ void main() {
       expect(res.category, CategoryType.promotional);
       expect(res.confidence, 1.0);
       expect(res.parsedHeader.suffix, 'P');
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('handles whitespace around sender: "  AX-HDFCBN-P  " -> Promotional', () async {
@@ -154,7 +153,7 @@ void main() {
       expect(res.category, CategoryType.promotional);
       expect(res.confidence, 1.0);
       expect(res.parsedHeader.suffix, 'P');
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('handles spaces around hyphens: "AX - HDFCBN - P" -> Promotional', () async {
@@ -165,7 +164,7 @@ void main() {
       expect(res.category, CategoryType.promotional);
       expect(res.parsedHeader.cleanHeader, 'HDFCBN');
       expect(res.parsedHeader.suffix, 'P');
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('handles underscore delimiter: "AX_HDFCBN_P" -> Promotional', () async {
@@ -176,7 +175,7 @@ void main() {
       expect(res.category, CategoryType.promotional);
       expect(res.parsedHeader.cleanHeader, 'HDFCBN');
       expect(res.parsedHeader.suffix, 'P');
-      expect(res.brand, 'HDFC Bank');
+      expect(res.brand, isNull);
     });
 
     test('handles carrier prepend: "+91AX-HDFCBN-P" and "+91-AD-HDFCBN-T"', () async {
